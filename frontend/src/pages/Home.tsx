@@ -19,18 +19,68 @@ interface Trainer {
 
 const HomePage = () => {
   const [trainers, setTrainers] = useState<Trainer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  const [displayedText, setDisplayedText] = useState("");
+  const text = "Coachify";
 
   useEffect(() => {
     const fetchTrainers = async () => {
       const trainersData = await getTrainers();
       setTrainers(trainersData);
     };
-    
+
+    // Kezdő progress bar
+    const interval = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress >= 100) {
+          clearInterval(interval);
+        }
+        return Math.min(oldProgress + 2, 100);  // Progress gyorsítás, 2%-onként
+      });
+    }, 50); // Töltés animáció sebessége
+
+    // Betűzés animáció - setTimeout megközelítés
+    const typeText = () => {
+      let index = 0;
+      const typeLetter = () => {
+        if (index < text.length) {
+          setDisplayedText((prev) => prev + text[index]);
+          index++;
+          setTimeout(typeLetter, 200); // Késleltetés a következő betű megjelenítéséhez
+        }
+      };
+      typeLetter();
+    };
+
     fetchTrainers();
+
+    // Minimum 3 másodperces betöltési idő
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // 3 másodpercig biztosan megjelenik a loader
+
+    // Betűzés elkezdése
+    typeText();
+
+    return () => {
+      clearTimeout(timer); // Tisztítás a timeout-ra
+    };
   }, []);
 
   return (
     <>
+      {loading && (
+        <div className="loader-wrapper">
+          <div className="loader">
+            <span className="loading-text">{displayedText}</span>
+            <div className="loader-bar">
+              <div className="progress" style={{ width: `${progress}%` }}></div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section with Image Background */}
       <header className="hero">
         <div className="image-background">

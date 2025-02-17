@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTrainers } from "../api";
+import { Link } from "react-router-dom";
 import "./HomePage.css";
-
-//proba
 
 interface Trainer {
   id: number;
@@ -23,7 +22,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchTrainers = async () => {
-      const trainersData = await getTrainers();  // feltételezve, hogy van egy API vagy mock adat
+      const trainersData = await getTrainers();
       setTrainers(trainersData);
     };
     
@@ -32,52 +31,26 @@ const HomePage = () => {
 
   return (
     <>
-      {/* Navbar */}
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div className="container">
-          <a className="navbar-brand" href="#">
-            Coachify
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Főoldal
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Edzők
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Kliensek
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Kapcsolat
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
+      {/* Hero Section with Video Background */}
       <header className="hero">
+        <div className="video-background">
+          <video autoPlay muted loop className="background-video">
+            <source src="/src/images/background-video.mp4" type="video/mp4" />
+          </video>
+          <div className="overlay"></div>
+        </div>
         <div className="container text-center">
-          <h1 className="display-4">Coachify</h1>
-          <p className="lead">Edzők, akik érted dolgoznak.</p>
+          <h1 className="display-4 text-orange">Coachify</h1>
+          <p className="lead text-white">Edzők, akik érted dolgoznak.</p>
+          {/* Log in & Sign up buttons */}
+          <div>
+            <Link to="/registration">
+              <button className="btn btn-light mx-2">Bejelentkezés</button>
+            </Link>
+            <Link to="/registration">
+              <button className="btn btn-light mx-2">Regisztráció</button>
+            </Link>
+          </div>
         </div>
       </header>
 

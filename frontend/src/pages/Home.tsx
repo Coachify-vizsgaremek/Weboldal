@@ -31,12 +31,14 @@ const HomePage = () => {
 
   return (
     <>
-      {/* Hero Section with Video Background */}
+      {/* Hero Section with Image Background */}
       <header className="hero">
-        <div className="video-background">
-          <video autoPlay muted loop className="background-video">
-            <source src="/src/images/background-video.mp4" type="video/mp4" />
-          </video>
+        <div className="image-background">
+          <img
+            src="/src/images/hatter.png"
+            alt="Hátter"
+            className="background-image"
+          />
           <div className="overlay"></div>
         </div>
         <div className="container text-center">
@@ -44,10 +46,10 @@ const HomePage = () => {
           <p className="lead text-white">Edzők, akik érted dolgoznak.</p>
           {/* Log in & Sign up buttons */}
           <div>
-            <Link to="/registration">
+            <Link to="/bejelentkezes">
               <button className="btn btn-light mx-2">Bejelentkezés</button>
             </Link>
-            <Link to="/registration">
+            <Link to="/regisztracio">
               <button className="btn btn-light mx-2">Regisztráció</button>
             </Link>
           </div>

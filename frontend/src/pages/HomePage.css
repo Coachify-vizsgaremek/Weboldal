@@ -1,64 +1,75 @@
 /* Alap stílusok */
-body {
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
   font-family: 'Arial', sans-serif;
   background-color: #111;
   color: #fff;
-  margin: 0;
-  padding: 0;
 }
 
 /* Hero Section */
 .hero {
   position: relative;
-  height: 100vh;  /* Magasság beállítása a teljes képernyőhöz */
+  width: 100%;
+  height: 80vh; /* A magasság csökkentése */
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
   text-align: center;
+  overflow: hidden;
+  margin-bottom: 0; /* eltávolítja az alatta lévő margót */
 }
 
-.hero video {
+/* Kép háttér */
+.image-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  z-index: -1; /* Videó a háttérben */
+  object-fit: cover; /* A kép kitölti az egész hátteret */
+  z-index: 0;
 }
 
+/* Overlay sötétítés */
 .hero .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Enyhe sötétítő réteg */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
+}
+
+.hero h1, .hero p, .hero .btn {
+  position: relative;
+  z-index: 2;
 }
 
 .hero h1 {
   font-size: 3rem;
   font-weight: bold;
   color: #ffa500;
-  z-index: 2;
+  margin-bottom: 10px; /* Feljebb tolja a feliratot */
 }
 
 .hero p {
   font-size: 1.5rem;
   opacity: 0.9;
-  z-index: 2;
+  margin-bottom: 20px; /* A szöveg közvetlenül a felirat alatt */
 }
 
 .hero .btn {
-  margin-top: 20px;
+  margin-top: 10px; /* A gombok közelebb kerülnek */
   background-color: #ffa500;
   border: none;
   color: white;
   padding: 10px 20px;
   font-size: 1rem;
   cursor: pointer;
+  z-index: 3;
 }
 
 .hero .btn:hover {
@@ -67,13 +78,18 @@ body {
 
 /* Trainer Section */
 .trainers {
-  background-color: #222;
+  background-color: #1a1a1a; /* Nagyon sötét szürke háttér */
+  margin-top: -30px; /* Feljebb toljuk a szekciót */
+  padding-top: 20px; /* A szekció kicsit feljebb kerül */
+  padding-bottom: 50px; /* Egy kis margó az alján is */
 }
 
+/* Edzők kártya */
 .card {
   background-color: #333;
   border: none;
   color: white;
+  margin-bottom: 20px; /* Kisebb margó az alján */
 }
 
 .card-title {
@@ -90,9 +106,26 @@ body {
   color: #ccc;
 }
 
+/* Kapcsolatfelvétel gomb - narancssárga */
+.card .btn-primary {
+  background-color: #ffa500;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  z-index: 3;
+}
+
+.card .btn-primary:hover {
+  background-color: #e69500;
+}
+
 /* Footer */
 .footer {
   background-color: #333;
+  margin-top: 0;
 }
 
 .footer p {
@@ -117,13 +150,14 @@ button {
   color: white;
   font-size: 16px;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  z-index: 3;
 }
 
 button:hover {
   background-color: #e69500;
   transform: scale(1.05);
 }
-
 
 /* Responsive */
 @media (max-width: 768px) {

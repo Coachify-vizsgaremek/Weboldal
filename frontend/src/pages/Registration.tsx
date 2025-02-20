@@ -4,6 +4,7 @@ import "./Registration.css";
 
 const Registration = () => {
   const [formData, setFormData] = useState({
+    full_name: "", // Új mező a teljes névhez
     username: "",
     email: "",
     password: "",
@@ -18,7 +19,7 @@ const Registration = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formData.role) {
@@ -26,14 +27,48 @@ const Registration = () => {
       return;
     }
 
-    // További regisztrációs logika itt
-    console.log("Regisztrációs adatok:", formData);
+    if (formData.password !== formData.confirmPassword) {
+      setError("A jelszavak nem egyeznek!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        setError(data.message);
+      } else {
+        alert("Sikeres regisztráció!");
+      }
+    } catch (error) {
+      console.error("Hiba a regisztráció során:", error);
+      setError("Szerverhiba, próbáld újra később.");
+    }
   };
 
   return (
     <div className="registration-container">
       <h2>Regisztráció</h2>
       <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="full_name">Teljes név</label>
+          <input
+            type="text"
+            id="full_name"
+            name="full_name"
+            value={formData.full_name}
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
         <div className="form-group">
           <label htmlFor="username">Felhasználónév</label>
           <input
@@ -112,11 +147,9 @@ const Registration = () => {
 
         {error && <p className="error-message">{error}</p>}
 
-        <button type="submit">
-          Regisztrálok
-        </button>
+        <button type="submit">Regisztrálok</button>
       </form>
-      <p>
+      <p id="fiok">
         Már van fiókod? <Link to="/login">Bejelentkezés</Link>
       </p>
     </div>

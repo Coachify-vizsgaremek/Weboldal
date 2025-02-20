@@ -86,14 +86,14 @@ const HomePage = () => {
       <header className="hero">
         <div className="image-background">
           <img
-            src="/src/images/hatter.png"
+            src="/src/images/hatter2.png"
             alt="Hátter"
             className="background-image"
           />
           <div className="overlay"></div>
         </div>
         <div className="container text-center">
-          <h1 className="display-4 text-orange">Coachify</h1>
+          <h1 className="display-4 text-orange">COACHIFY</h1>
           <p className="lead text-white">Edzők, akik érted dolgoznak.</p>
           {/* Log in & Sign up buttons */}
           <div>

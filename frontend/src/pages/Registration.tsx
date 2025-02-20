@@ -8,16 +8,26 @@ const Registration = () => {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "", // Új mező az edző/kliens kiválasztására
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [error, setError] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Itt történhet a regisztrációs logika
+
+    if (!formData.role) {
+      setError("Kérlek, válaszd ki, hogy edző vagy kliens vagy!");
+      return;
+    }
+
+    // További regisztrációs logika itt
+    console.log("Regisztrációs adatok:", formData);
   };
 
   return (
@@ -35,6 +45,7 @@ const Registration = () => {
             required
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="email">E-mail</label>
           <input
@@ -46,6 +57,7 @@ const Registration = () => {
             required
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="password">Jelszó</label>
           <input
@@ -57,6 +69,7 @@ const Registration = () => {
             required
           />
         </div>
+
         <div className="form-group">
           <label htmlFor="confirmPassword">Jelszó megerősítése</label>
           <input
@@ -68,7 +81,38 @@ const Registration = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">
+
+        {/* Edző vagy Kliens választás */}
+        <div className="form-group">
+          <label>Válaszd ki a szereped</label>
+          <div className="role-selection">
+            <label className={`role-option ${formData.role === "trainer" ? "selected" : ""}`}>
+              <input
+                type="radio"
+                name="role"
+                value="trainer"
+                checked={formData.role === "trainer"}
+                onChange={handleInputChange}
+              />
+              Edző
+            </label>
+
+            <label className={`role-option ${formData.role === "client" ? "selected" : ""}`}>
+              <input
+                type="radio"
+                name="role"
+                value="client"
+                checked={formData.role === "client"}
+                onChange={handleInputChange}
+              />
+              Kliens
+            </label>
+          </div>
+        </div>
+
+        {error && <p className="error-message">{error}</p>}
+
+        <button type="submit">
           Regisztrálok
         </button>
       </form>

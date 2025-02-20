@@ -15,12 +15,13 @@ const db = mysql.createPool({
     user: 'root',
     password: '',
     database: 'coachify',
-  }).promise();
+}).promise();
+
 const sessionStore = new MySQLSessionStore({}, db);
 app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
-  }));
+}));
 
 app.use(bodyParser.json());
 app.use(session({
@@ -29,66 +30,66 @@ app.use(session({
     store: sessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, httpOnly: true, maxAge: 60000 } // Sütik beállításai
-  }));
+    cookie: { secure: false, httpOnly: true, maxAge: 60000 }
+}));
 
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
-  
+
     try {
-      const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
-      if (rows.length > 0) {
-        return res.status(400).json({ message: 'User already exists' });
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      await db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword]);
-      res.status(201).json({ message: 'User registered successfully' });
+        const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
+        if (rows.length > 0) {
+            return res.status(400).json({ message: 'User already exists' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword]);
+        res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-  
+
     try {
-      const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
-      if (rows.length === 0) {
-        return res.status(400).json({ message: 'Invalid credentials' });
-      }
-  
-      const user = rows[0];
-  
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-      if (!isPasswordValid) {
-        return res.status(400).json({ message: 'Invalid credentials' });
-      }
-  
-      req.session.user = { id: user.id, username: user.username };
-      res.json({ message: 'Login successful' });
+        const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
+        if (rows.length === 0) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        const user = rows[0];
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        req.session.user = { id: user.id, username: user.username };
+        res.json({ message: 'Login successful' });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 });
+
 app.get('/protected', (req, res) => {
     if (!req.session.user) {
-      return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: 'Unauthorized' });
     }
     res.json({ message: `${req.session.user.username}` });
 });
+
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
-      if (err) {
-        return res.status(500).json({ message: 'Logout failed' });
-      }
-      res.clearCookie('session_cookie_name');
-      res.json({ message: 'Logout successful' });
+        if (err) {
+            return res.status(500).json({ message: 'Logout failed' });
+        }
+        res.clearCookie('session_cookie_name');
+        res.json({ message: 'Logout successful' });
     });
-  });
+});
 
 app.get('/trainers', async (req, res) => {
     try {
@@ -99,4 +100,17 @@ app.get('/trainers', async (req, res) => {
     }
 });
 
-app.listen(port);
+// Új végpont a kliensek adatainak lekérdezésére
+app.get('/clients', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT id, full_name, age, email FROM kliensek');
+        res.json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Database query failed' });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});

@@ -30,24 +30,24 @@ const HomePage = () => {
       setTrainers(trainersData);
     };
 
-    // Kezdő progress bar
+    // Kezdő progress bar animáció
     const interval = setInterval(() => {
       setProgress((oldProgress) => {
         if (oldProgress >= 100) {
           clearInterval(interval);
         }
-        return Math.min(oldProgress + 2, 100);  // Progress gyorsítás, 2%-onként
+        return Math.min(oldProgress + 2, 100);
       });
-    }, 50); // Töltés animáció sebessége
+    }, 50);
 
-    // Betűzés animáció - setTimeout megközelítés
+    // Betűzés animáció - helyesen működő verzió
     const typeText = () => {
       let index = 0;
       const typeLetter = () => {
-        if (index < text.length) {
-          setDisplayedText((prev) => prev + text[index]);
+        if (index <= text.length) {
+          setDisplayedText(text.substring(0, index)); // Csak a megfelelő hosszúságú substringet állítja be
           index++;
-          setTimeout(typeLetter, 200); // Késleltetés a következő betű megjelenítéséhez
+          setTimeout(typeLetter, 200);
         }
       };
       typeLetter();
@@ -58,13 +58,14 @@ const HomePage = () => {
     // Minimum 3 másodperces betöltési idő
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000); // 3 másodpercig biztosan megjelenik a loader
+    }, 3000);
 
     // Betűzés elkezdése
     typeText();
 
     return () => {
-      clearTimeout(timer); // Tisztítás a timeout-ra
+      clearTimeout(timer);
+      clearInterval(interval);
     };
   }, []);
 
@@ -149,7 +150,7 @@ const HomePage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="footer bg-dark text-white text-center py-4">
+      <footer className="footer text-white text-center py-4">
         <div className="container">
           <p>&copy; 2025 Coachify. Minden jog fenntartva.</p>
           <p>

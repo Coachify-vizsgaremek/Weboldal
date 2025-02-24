@@ -97,7 +97,7 @@ const HomePage = () => {
           <p className="lead text-white">Edzők, akik érted dolgoznak.</p>
           {/* Log in & Sign up buttons */}
           <div>
-            <Link to="/bejelentkezes">
+            <Link to="/login">
               <button className="btn btn-light mx-2">Bejelentkezés</button>
             </Link>
             <Link to="/regisztracio">
@@ -148,22 +148,6 @@ const HomePage = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer text-white text-center py-4">
-        <div className="container">
-          <p>&copy; 2025 Coachify. Minden jog fenntartva.</p>
-          <p>
-            <a href="#" className="text-white">
-              Adatvédelmi irányelvek
-            </a>{" "}
-            |{" "}
-            <a href="#" className="text-white">
-              Felhasználási feltételek
-            </a>
-          </p>
-        </div>
-      </footer>
     </>
   );
 };

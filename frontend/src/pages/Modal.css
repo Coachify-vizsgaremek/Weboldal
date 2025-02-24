@@ -1,0 +1,49 @@
+/* Felugró ablak stílus */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6); /* Átlátszó háttér */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal-container {
+    background-color: #222; /* Sötét háttér */
+    border-radius: 12px;
+    padding: 40px;
+    width: 640px; /* Megnövelt méret */
+    text-align: center;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    color: white;
+  }
+  
+  .modal-container h3 {
+    font-size: 1.5rem; /* Nagyobb betű */
+    margin-bottom: 15px;
+    color: #ff6600; /* Narancs cím */
+  }
+  
+  .modal-container p {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+  }
+  
+  .modal-close-btn {
+    background-color: #ff6600;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1rem;
+  }
+  
+  .modal-close-btn:hover {
+    background-color: #e65c00;
+  }
+  

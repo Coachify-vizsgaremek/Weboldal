@@ -1,49 +1,56 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
+import Modal from "./Modal";
 
-const Login = () => {
+const Login: React.FC = () => {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
         role: "",
     });
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState<string>("");
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>(""); // A bejelentkezett felhasználó neve
     const navigate = useNavigate();
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    if (!formData.role) {
+        setError("Kérlek, válaszd ki, hogy edző vagy kliens vagy!");
+        return;
+    }
 
-        if (!formData.role) {
-            setError("Kérlek, válaszd ki, hogy edző vagy kliens vagy!");
-            return;
+    try {
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            setError(data.message || "Hibás bejelentkezési adatok");
+        } else {
+            // A backend válaszában a full_name vagy username szerepel, ezért azt használjuk
+            setUsername(data.full_name || data.username || "Felhasználó");
+            setShowModal(true);
         }
-
-        try {
-            const response = await fetch("http://localhost:3000/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(formData),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                setError(data.message || "Invalid credentials");
-            } else {
-                alert("Sikeres bejelentkezés!");
-                navigate("/");
-            }
-        } catch (error) {
-            console.error("Hiba a bejelentkezés során:", error);
-            setError("Szerverhiba, próbáld újra később.");
-        }
+    } catch (error) {
+        console.error("Hiba a bejelentkezés során:", error);
+        setError("Szerverhiba, próbáld újra később.");
+    }
+};
+    const handleCloseModal = () => {
+        setShowModal(false);
+        navigate("/"); // Átirányítás a főoldalra
     };
 
     return (
@@ -111,6 +118,8 @@ const Login = () => {
                     Ha nincs még fiókod, <Link to="/regisztracio">regisztrálj</Link>!
                 </p>
             </div>
+
+            {showModal && <Modal username={username} onClose={handleCloseModal} enlarged />}
         </div>
     );
 };

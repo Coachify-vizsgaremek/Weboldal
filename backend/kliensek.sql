@@ -3,7 +3,7 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 CREATE TABLE `kliensek` (
-  `id` int(11) NOT NULL,
+  `id` int(11) AUTO_INCREMENT PRIMARY KEY NOT NULL,
   `full_name` varchar(100) NOT NULL,
   `age` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,

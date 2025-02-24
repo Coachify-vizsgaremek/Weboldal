@@ -40,13 +40,13 @@ app.use(
 
 // Register endpoint
 app.post("/register", async (req, res) => {
-    const { full_name, email, password, role } = req.body;
-
+    const { full_name, email, password, role, age, location, specialization, available_training_types, price_range, languages, reviews, introduction } = req.body; 
     try {
         if (!role || (role !== "trainer" && role !== "client")) {
             return res.status(400).json({ message: "Invalid role selected" });
         }
 
+        // Ellenőrizzük, hogy létezik-e már ilyen email
         const [rows] = await db.query(
             `SELECT * FROM ${role === "trainer" ? "trainers" : "kliensek"} WHERE email = ?`,
             [email]
@@ -56,12 +56,22 @@ app.post("/register", async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
 
+        // Jelszó hashelése
         const hashedPassword = await bcrypt.hash(password, 10);
-        console.log("Hashed password:", hashedPassword); // Debug log
-        await db.query(
-            `INSERT INTO ${role === "trainer" ? "trainers" : "kliensek"} (full_name, email, password) VALUES (?, ?, ?)`,
-            [full_name, email, hashedPassword]
-        );
+
+        if (role === "trainer") {
+            // Edző regisztrációja
+            await db.query(
+                `INSERT INTO trainers (full_name, email, password, location, specialization, available_training_types, price_range, languages, reviews, introduction) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [full_name, email, hashedPassword, location, specialization, available_training_types, price_range, languages, reviews, introduction]
+            );
+        } else {
+            // Kliens regisztrációja
+            await db.query(
+                `INSERT INTO kliensek (full_name, email, password, age) VALUES (?, ?, ?, ?)`,
+                [full_name, email, hashedPassword, age]
+            );
+        }
 
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
@@ -69,7 +79,6 @@ app.post("/register", async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
-
 // Login endpoint
 app.post("/login", async (req, res) => {
     const { email, password, role } = req.body;
@@ -89,23 +98,39 @@ app.post("/login", async (req, res) => {
         }
 
         const user = rows[0];
-        console.log("Input password:", password); // Debug log
-        console.log("Stored hashed password:", user.password); // Debug log
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        console.log("Password match:", isPasswordValid); // Debug log
+
+        let isPasswordValid = false;
+
+        // Check if the password is bcrypt-hashed
+        if (user.password.startsWith("$2b$")) {
+            // Password is bcrypt-hashed, use bcrypt.compare
+            isPasswordValid = await bcrypt.compare(password, user.password);
+        } else {
+            // Password is plain text, compare directly
+            isPasswordValid = password === user.password;
+
+            // If the password is valid, hash it and update the database
+            if (isPasswordValid) {
+                const hashedPassword = await bcrypt.hash(password, 10);
+                await db.query(
+                    `UPDATE ${role === "trainer" ? "trainers" : "kliensek"} SET password = ? WHERE id = ?`,
+                    [hashedPassword, user.id]
+                );
+            }
+        }
 
         if (!isPasswordValid) {
             return res.status(400).json({ message: "Invalid password" });
         }
 
         req.session.user = { id: user.id, full_name: user.full_name, role };
-        res.json({ message: "Login successful" });
+        // Válaszban visszaküldjük a felhasználó nevét is
+        res.json({ message: "Login successful", full_name: user.full_name });
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ message: "Server error" });
     }
 });
-
 // Protected route
 app.get("/protected", (req, res) => {
     if (!req.session.user) {

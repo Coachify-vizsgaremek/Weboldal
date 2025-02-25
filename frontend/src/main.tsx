@@ -8,17 +8,26 @@ import Footer from "./pages/Footer"; // Footer importálása
 import Regisztracio from "./pages/Registration";
 import Home from './pages/Home';
 import Login from "./pages/Login";
+import { AuthProvider } from "./pages/AuthContext"; // AuthProvider importálása
+import Kapcsolat from "./pages/Kapcsolat"; // Kapcsolat helyettesítő
+import Edzok from "./pages/Edzok"; // Edzők helyettesítő
+import Szolgaltatasok from "./pages/Szolgaltatasok"; // Szolgáltatások helyettesítő
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/regisztracio" element={<Regisztracio />} />
-        <Route path="/login" element={<Login />} />  
-      </Routes>
-      <Footer />  {/* Footer meghívása */}
-    </Router>
+    <AuthProvider> {/* Az AuthProvider becsomagolja az alkalmazást */}
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/regisztracio" element={<Regisztracio />} />
+          <Route path="/login" element={<Login />} />  
+          <Route path="/szolgaltatasok" element={<Szolgaltatasok />} />
+          <Route path="/kapcsolat" element={<Kapcsolat />} />
+          <Route path="/edzok" element={<Edzok />} />
+        </Routes>
+        <Footer />  {}
+      </Router>
+    </AuthProvider>
   </StrictMode>
 );

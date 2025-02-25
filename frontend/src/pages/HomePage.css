@@ -38,6 +38,19 @@ body, html {
   margin-bottom: 20px;
   letter-spacing: 5px; /* Növeli a betűk közötti távolságot */
   white-space: nowrap; /* Megakadályozza, hogy a szöveg több sorba törjön */
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1s ease-out forwards; /* Animáció a szöveg megjelenítéséhez */
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .loader-bar {
@@ -46,6 +59,7 @@ body, html {
   background-color: #444;
   border-radius: 5px;
   overflow: hidden;
+  position: relative;
 }
 
 .loader-bar .progress {
@@ -53,13 +67,35 @@ body, html {
   height: 100%;
   background-color: #ffa500;
   transition: width 0.4s linear;
+  position: relative;
+}
+
+/* Fénycsóva effektus a töltősávhoz */
+.loader-bar .progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 165, 0, 0.8), rgba(255, 165, 0, 0.2));
+  animation: glow 1.5s infinite alternate; /* Fénycsóva animáció */
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Hero Section */
 .hero {
   position: relative;
   width: 100%;
-  height: 80vh;
+  height: 100vh; /* Teljes képernyős magasság */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,7 +104,7 @@ body, html {
   margin-bottom: 0;
 }
 
-.image-background {
+.video-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -78,47 +114,112 @@ body, html {
   z-index: 0;
 }
 
+.background-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .hero .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6); /* Sötétebb overlay a videóra */
   z-index: 1;
 }
 
-.hero h1, .hero p, .hero .btn {
+.hero-content {
   position: relative;
   z-index: 2;
+  max-width: 800px;
+  padding: 20px;
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 4rem; /* Nagyobb cím */
   font-weight: bold;
   color: #ffa500;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Szöveg árnyék */
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
 }
 
 .hero p {
-  font-size: 1.5rem;
-  opacity: 0.9;
-  margin-bottom: 20px;
+  font-size: 1.8rem; /* Nagyobb szöveg */
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  margin-bottom: 40px;
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Szöveg árnyék */
 }
 
-.hero .btn {
-  margin-top: 10px;
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Térköz a gombok között */
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+}
+
+.btn-special {
   background-color: #ffa500;
   border: none;
   color: white;
-  padding: 10px 20px;
-  font-size: 1rem;
+  padding: 12px 24px;
+  font-size: 1.2rem;
   cursor: pointer;
-  z-index: 3;
+  border-radius: 30px; /* Kerekített gombok */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Gomb árnyék */
+  position: relative;
+  overflow: hidden;
 }
 
-.hero .btn:hover {
+.btn-special:hover {
   background-color: #e69500;
+  transform: translateY(-5px); /* Gomb felemelkedik hoverkor */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Nagyobb árnyék hoverkor */
+}
+
+/* Fénycsóva effektus a gombokhoz */
+.btn-special::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 70%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s ease;
+}
+
+.btn-special:hover::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Animációk */
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.8s ease-out forwards;
+}
+
+.delay-1 {
+  animation-delay: 0.4s;
+}
+
+.delay-2 {
+  animation-delay: 0.8s;
 }
 
 /* Trainer Section */
@@ -127,43 +228,6 @@ body, html {
   margin-top: -30px;
   padding-top: 20px;
   padding-bottom: 50px;
-}
-
-/* Edzők kártya */
-.card {
-  background-color: #333;
-  border: none;
-  color: white;
-  margin-bottom: 20px;
-}
-
-.card-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.card-body {
-  padding: 1.5rem;
-}
-
-.card-text {
-  font-size: 1rem;
-  color: #ccc;
-}
-
-/* Kapcsolatfelvétel gomb */
-.card .btn-primary {
-  background-color: #ffa500;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.card .btn-primary:hover {
-  background-color: #e69500;
 }
 
 /* Gombok stílusai */
@@ -197,4 +261,76 @@ button:hover {
   .card-body {
     padding: 1rem;
   }
+
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-special {
+    width: 100%;
+    padding: 10px 20px;
+  }
+}
+
+/* Intro és statisztika szekció */
+.intro-stats {
+  background-color: rgba(30, 30, 30, 0.9); /* Világosabb fekete háttér */
+  padding: 60px 20px;
+  margin-bottom: 40px;
+}
+
+.intro-stats h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffa500;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.intro-stats p {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.stat-item {
+  text-align: center;
+  background-color: rgba(255, 165, 0, 0.1); /* Narancs árnyalatú háttér */
+  padding: 20px;
+  border-radius: 10px;
+  flex: 1 1 200px;
+  max-width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(255, 165, 0, 0.2);
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffa500;
+  margin-bottom: 10px;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0;
+}
+
+/* A középen lévő csík eltávolítása */
+.intro-stats hr {
+  display: none; /* Elrejtjük a csíkot */
 }

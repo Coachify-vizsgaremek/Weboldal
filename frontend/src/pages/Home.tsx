@@ -22,50 +22,87 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
+  const [trainersLoaded, setTrainersLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Betöltőképernyő állapota
+  const [showContent, setShowContent] = useState(false); // Tartalom megjelenítésének állapota
   const text = "Coachify";
 
+  // Betöltési animáció és localStorage kezelése
   useEffect(() => {
-    const fetchTrainers = async () => {
-      const trainersData = await getTrainers();
-      setTrainers(trainersData);
-    };
+    const hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
 
-    // Kezdő progress bar animáció
-    const interval = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress >= 100) {
-          clearInterval(interval);
-        }
-        return Math.min(oldProgress + 2, 100);
-      });
-    }, 50);
+    if (!hasLoadedBefore) {
+      const interval = setInterval(() => {
+        setProgress((oldProgress) => {
+          if (oldProgress >= 100) {
+            clearInterval(interval);
+          }
+          return Math.min(oldProgress + 2, 100);
+        });
+      }, 50);
 
-    // Betűzés animáció - helyesen működő verzió
-    const typeText = () => {
-      let index = 0;
-      const typeLetter = () => {
-        if (index <= text.length) {
-          setDisplayedText(text.substring(0, index)); // Csak a megfelelő hosszúságú substringet állítja be
-          index++;
-          setTimeout(typeLetter, 200);
-        }
+      const typeText = () => {
+        let index = 0;
+        const typeLetter = () => {
+          if (index <= text.length) {
+            setDisplayedText(text.substring(0, index));
+            index++;
+            setTimeout(typeLetter, 200);
+          }
+        };
+        typeLetter();
       };
-      typeLetter();
+
+      const timer = setTimeout(() => {
+        setLoading(false);
+        setIsLoading(false); // Betöltőképernyő befejeződött
+        localStorage.setItem("hasLoadedBefore", "true");
+
+        // Tartalom megjelenítése animációkkal
+        setTimeout(() => {
+          setShowContent(true);
+        }, 500); // 500 ms késleltetés
+      }, 3000);
+
+      typeText();
+
+      return () => {
+        clearTimeout(timer);
+        clearInterval(interval);
+      };
+    } else {
+      setLoading(false);
+      setIsLoading(false); // Betöltőképernyő már nem fut
+      setShowContent(true); // Tartalom azonnal megjelenik
+    }
+  }, []);
+
+  // Edzők betöltése
+  useEffect(() => {
+    const loadTrainers = async () => {
+      try {
+        const trainersData = await getTrainers();
+        setTrainers(trainersData);
+        setTrainersLoaded(true); // Edzők sikeresen betöltődtek
+      } catch (error) {
+        console.error("Hiba az edzők betöltésekor:", error);
+        setTrainersLoaded(false); // Hiba történt az edzők betöltésekor
+      }
     };
 
-    fetchTrainers();
+    loadTrainers();
+  }, []);
 
-    // Minimum 3 másodperces betöltési idő
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+  // Oldal újratöltődésekor töröljük a localStorage-ból a "hasLoadedBefore" értékét
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("hasLoadedBefore");
+    };
 
-    // Betűzés elkezdése
-    typeText();
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -82,72 +119,56 @@ const HomePage = () => {
         </div>
       )}
 
-      {/* Hero Section with Image Background */}
       <header className="hero">
-        <div className="image-background">
-          <img
-            src="/src/images/hatter2.png"
-            alt="Hátter"
-            className="background-image"
-          />
+        <div className="video-background">
+          <video autoPlay muted loop className="background-video">
+            <source src="/src/images/video.mp4" type="video/mp4" />
+            A böngésződ nem támogatja a videó lejátszást.
+          </video>
           <div className="overlay"></div>
         </div>
-        <div className="container text-center">
-          <h1 className="display-4 text-orange">COACHIFY</h1>
-          <p className="lead text-white">Edzők, akik érted dolgoznak.</p>
-          {/* Log in & Sign up buttons */}
-          <div>
-            <Link to="/login">
-              <button className="btn btn-light mx-2">Bejelentkezés</button>
-            </Link>
-            <Link to="/regisztracio">
-              <button className="btn btn-light mx-2">Regisztráció</button>
-            </Link>
-          </div>
+        <div className="container text-center hero-content">
+          {showContent && (
+            <>
+              <h1 className="display-4 text-orange animate-pop-in">COACHIFY</h1>
+              <p className="lead text-white animate-pop-in delay-1">Edzők, akik érted dolgoznak.</p>
+              <div className="button-container animate-pop-in delay-2">
+                <Link to="/login">
+                  <button className="btn btn-light mx-2 btn-special">Bejelentkezés</button>
+                </Link>
+                <Link to="/regisztracio">
+                  <button className="btn btn-light mx-2 btn-special">Regisztráció</button>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </header>
 
-      {/* Trainer Section */}
-      <section className="trainers py-5">
-        <div className="container">
-          <h2 className="text-center mb-4">Találd meg a legjobb edzőt</h2>
-          <div className="row">
-            {trainers.length > 0 ? (
-              trainers.map((trainer) => (
-                <div key={trainer.id} className="col-md-4">
-                  <div className="card mb-4">
-                    <img
-                      src="https://via.placeholder.com/150"
-                      className="card-img-top"
-                      alt="Edző"
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title">{trainer.full_name}</h5>
-                      <p className="card-text">
-                        Specializáció: {trainer.specialization}
-                      </p>
-                      <p className="card-text">
-                        Helyszín: {trainer.location}
-                      </p>
-                      <p className="card-text">
-                        Ártartomány: {trainer.price_range}
-                      </p>
-                      <p className="card-text">
-                        Nyelvek: {trainer.languages}
-                      </p>
-                      <a href="#" className="btn btn-primary">
-                        Kapcsolatfelvétel
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>Jelenleg nincs elérhető edző.</p>
-            )}
-          </div>
-        </div>
-      </section>
+      <section className="intro-stats py-5">
+  <div className="container">
+    <h2 className="text-center mb-4 text-orange animate-pop-in">Miért válassz minket?</h2>
+    <p className="lead text-center text-white animate-pop-in delay-1">
+      A Coachify segít, hogy megtaláld a számodra legmegfelelőbb edzőt, akivel elérheted az álom testedet. 
+      Legyen szó fogyásról, izomépítésről vagy egészségmegőrzésről, nálunk mindent megtalálsz.
+    </p>
+
+    <div className="stats-container animate-pop-in delay-2">
+      <div className="stat-item">
+        <h3 className="stat-number">100+</h3>
+        <p className="stat-label">Elégedett felhasználó</p>
+      </div>
+      <div className="stat-item">
+        <h3 className="stat-number">50+</h3>
+        <p className="stat-label">Tapasztalt edző</p>
+      </div>
+      <div className="stat-item">
+        <h3 className="stat-number">95%</h3>
+        <p className="stat-label">Elégedettségi ráta</p>
+      </div>
+    </div>
+  </div>
+</section>
     </>
   );
 };

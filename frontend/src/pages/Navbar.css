@@ -1,12 +1,21 @@
+/* Navbar */
 .navbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Logó balra, többi tartalom jobbra */
   align-items: center;
   padding: 15px 30px;
-  background-color: rgba(0, 0, 0, 0.8); /* Átlátszó fekete háttér */
-  border-bottom: 1px solid #fff; /* Vékony fehér vonal az alján */
+  background-color: rgba(0, 0, 0, 0.8); /* Szinte fekete, de enyhén átlátszó */
+  position: fixed; /* Rögzített pozíció */
+  top: 0; /* A Navbar az oldal tetején legyen */
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Biztosítjuk, hogy a Navbar mindig legfelül legyen */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Árnyék hozzáadása */
+  transition: background-color 0.8s ease; /* Sima átmenet a háttérszín változásához */
+  backdrop-filter: blur(10px); 
 }
 
+/* Logó és "Coachify" felirat bal oldalon */
 .logo {
   display: flex;
   align-items: center;
@@ -25,6 +34,13 @@
   color: #fff;
 }
 
+/* Navigációs linkek és felhasználói rész jobb oldalon */
+.nav-content {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Térköz a navigációs linkek és a felhasználói rész között */
+}
+
 .nav-links {
   display: flex;
   gap: 20px;
@@ -38,16 +54,62 @@
 }
 
 .nav-link:hover {
-  color: #ffa500; /* Narancssárga hover */
+  color: #ffa500;
 }
 
+/* User Section */
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Térköz a profil ikon és a bejelentkezés gomb/felhasználó név között */
+}
+
+.pfp-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-name {
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.login-button {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 8px 16px;
+  border: 1px solid #ffa500;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #ffa500;
+  color: #000;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .nav-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
   .nav-links {
     flex-direction: column;
     gap: 10px;
+  }
+
+  .user-section {
+    margin-top: 10px;
   }
 }

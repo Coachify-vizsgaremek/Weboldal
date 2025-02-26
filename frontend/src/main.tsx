@@ -12,6 +12,7 @@ import { AuthProvider } from "./pages/AuthContext"; // AuthProvider importálás
 import Kapcsolat from "./pages/Kapcsolat"; // Kapcsolat helyettesítő
 import Edzok from "./pages/Edzok"; // Edzők helyettesítő
 import Szolgaltatasok from "./pages/Szolgaltatasok"; // Szolgáltatások helyettesítő
+import Profile from "./pages/Profile"; // Profile importálása
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -25,6 +26,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/szolgaltatasok" element={<Szolgaltatasok />} />
           <Route path="/kapcsolat" element={<Kapcsolat />} />
           <Route path="/edzok" element={<Edzok />} />
+          <Route path="/profile" element={<Profile />} /> {/* Új route a profil oldalhoz */}
         </Routes>
         <Footer />  {}
       </Router>

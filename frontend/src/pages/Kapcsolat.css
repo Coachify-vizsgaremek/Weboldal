@@ -1,0 +1,279 @@
+/* Alap stílusok */
+.contact-page {
+  background-color: #111; /* Sötét háttér */
+  color: #fff; /* Fehér szöveg */
+  font-family: 'Arial', sans-serif;
+  overflow-x: hidden;
+  padding-top: 100px;
+}
+
+/* Navbar animáció */
+.navbar {
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1s ease-out 0.5s forwards; /* Animáció a navbar megjelenítéséhez */
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #ffa500, #ff4500);
+  padding: 120px 20px;
+  text-align: center;
+  margin-bottom: 80px;
+  border-bottom: 5px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-section h1 {
+  font-size: 4.5rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1.5s ease-out forwards;
+}
+
+.hero-section p {
+  font-size: 1.6rem;
+  color: #fff;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1.5s ease-out 0.5s forwards;
+}
+
+/* Cég bemutatkozása */
+.company-intro {
+  text-align: center;
+  margin-bottom: 80px;
+  padding: 0 20px;
+}
+
+.company-intro h2 {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #ffa500;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1.5s ease-out 1s forwards;
+}
+
+.company-intro p {
+  font-size: 1.4rem;
+  color: #fff;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1.5s ease-out 1.5s forwards;
+}
+
+/* Csapat bemutatása - Modern design */
+.team-section {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 40px;
+  padding: 0 20px;
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1.5s ease-out 2s forwards;
+}
+
+.team-member {
+  background: rgba(255, 255, 255, 0.1); /* Átlátszó fehér háttér */
+  border-radius: 25px;
+  padding: 30px;
+  text-align: center;
+  flex: 1 1 300px;
+  max-width: 350px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(255, 165, 0, 0.5);
+}
+
+.team-member:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 24px rgba(255, 165, 0, 0.4);
+}
+
+.team-member img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid #ffa500;
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover img {
+  transform: scale(1.1);
+}
+
+.team-member h3 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #ffa500;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.team-member p {
+  font-size: 1.2rem;
+  color: #fff;
+  line-height: 1.6;
+}
+
+.team-member .contact-info {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #ffa500;
+}
+
+/* Elérhetőségek - Kisebb és letisztult */
+.contact-info-section {
+  background: rgba(30, 30, 30, 0.9);
+  padding: 40px 20px;
+  margin-top: 60px;
+  text-align: center;
+  border-top: 2px solid #ffa500;
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1.5s ease-out 2.5s forwards;
+}
+
+.contact-info-section h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffa500;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.contact-info-section p {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.contact-info-section a {
+  color: #ffa500;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.contact-info-section a:hover {
+  text-decoration: underline;
+}
+
+/* Kapcsolatfelvétel űrlap - Modern design */
+.contact-form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 25px;
+  border: 2px solid rgba(255, 165, 0, 0.5);
+  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  animation: fade-in 1.5s ease-out 3s forwards;
+}
+
+.contact-form h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffa500;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  text-align: center;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ffa500;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #ff4500;
+  box-shadow: 0 0 8px rgba(255, 69, 0, 0.6);
+  outline: none;
+}
+
+.contact-form button {
+  background-color: #ffa500;
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  width: 100%;
+}
+
+.contact-form button:hover {
+  background-color: #e69500;
+  transform: translateY(-3px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 3rem;
+  }
+
+  .hero-section p {
+    font-size: 1.2rem;
+  }
+
+  .company-intro h2 {
+    font-size: 2.5rem;
+  }
+
+  .company-intro p {
+    font-size: 1.2rem;
+  }
+
+  .team-member {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .team-member img {
+    width: 120px;
+    height: 120px;
+  }
+
+  .team-member h3 {
+    font-size: 1.8rem;
+  }
+
+  .team-member p {
+    font-size: 1rem;
+  }
+
+  .contact-form {
+    padding: 20px;
+  }
+}

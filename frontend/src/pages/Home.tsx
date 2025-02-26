@@ -23,11 +23,12 @@ const HomePage = () => {
   const [progress, setProgress] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
   const [trainersLoaded, setTrainersLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Betöltőképernyő állapota
-  const [showContent, setShowContent] = useState(false); // Tartalom megjelenítésének állapota
+  const [isLoading, setIsLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
   const text = "Coachify";
 
-  // Betöltési animáció és localStorage kezelése
+  
+
   useEffect(() => {
     const hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
 
@@ -55,13 +56,12 @@ const HomePage = () => {
 
       const timer = setTimeout(() => {
         setLoading(false);
-        setIsLoading(false); // Betöltőképernyő befejeződött
+        setIsLoading(false);
         localStorage.setItem("hasLoadedBefore", "true");
 
-        // Tartalom megjelenítése animációkkal
         setTimeout(() => {
           setShowContent(true);
-        }, 500); // 500 ms késleltetés
+        }, 500);
       }, 3000);
 
       typeText();
@@ -72,28 +72,26 @@ const HomePage = () => {
       };
     } else {
       setLoading(false);
-      setIsLoading(false); // Betöltőképernyő már nem fut
-      setShowContent(true); // Tartalom azonnal megjelenik
+      setIsLoading(false);
+      setShowContent(true);
     }
   }, []);
 
-  // Edzők betöltése
   useEffect(() => {
     const loadTrainers = async () => {
       try {
         const trainersData = await getTrainers();
         setTrainers(trainersData);
-        setTrainersLoaded(true); // Edzők sikeresen betöltődtek
+        setTrainersLoaded(true);
       } catch (error) {
         console.error("Hiba az edzők betöltésekor:", error);
-        setTrainersLoaded(false); // Hiba történt az edzők betöltésekor
+        setTrainersLoaded(false);
       }
     };
 
     loadTrainers();
   }, []);
 
-  // Oldal újratöltődésekor töröljük a localStorage-ból a "hasLoadedBefore" értékét
   useEffect(() => {
     const handleBeforeUnload = () => {
       localStorage.removeItem("hasLoadedBefore");
@@ -105,6 +103,13 @@ const HomePage = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+
+  // Statisztikák kinyerése az adatbázisból
+  const locations = [...new Set(trainers.map(trainer => trainer.location))];
+  const prices = trainers.map(trainer => parseInt(trainer.price_range));
+  const languages = [...new Set(trainers.flatMap(trainer => trainer.languages.split(',')))];
+
+  const averagePrice = prices.reduce((a, b) => a + b, 0) / prices.length;
 
   return (
     <>
@@ -146,29 +151,51 @@ const HomePage = () => {
       </header>
 
       <section className="intro-stats py-5">
-  <div className="container">
-    <h2 className="text-center mb-4 text-orange animate-pop-in">Miért válassz minket?</h2>
-    <p className="lead text-center text-white animate-pop-in delay-1">
-      A Coachify segít, hogy megtaláld a számodra legmegfelelőbb edzőt, akivel elérheted az álom testedet. 
-      Legyen szó fogyásról, izomépítésről vagy egészségmegőrzésről, nálunk mindent megtalálsz.
-    </p>
+        <div className="container">
+          <h2 className="text-center mb-4 text-orange animate-pop-in">Miért válassz minket?</h2>
+          <p className="lead text-center text-white animate-pop-in delay-1">
+            A Coachify segít, hogy megtaláld a számodra legmegfelelőbb edzőt, akivel elérheted az álom testedet.
+            Legyen szó fogyásról, izomépítésről vagy egészségmegőrzésről, nálunk mindent megtalálsz.
+          </p>
 
-    <div className="stats-container animate-pop-in delay-2">
-      <div className="stat-item">
-        <h3 className="stat-number">100+</h3>
-        <p className="stat-label">Elégedett felhasználó</p>
-      </div>
-      <div className="stat-item">
-        <h3 className="stat-number">50+</h3>
-        <p className="stat-label">Tapasztalt edző</p>
-      </div>
-      <div className="stat-item">
-        <h3 className="stat-number">95%</h3>
-        <p className="stat-label">Elégedettségi ráta</p>
-      </div>
-    </div>
-  </div>
-</section>
+          <div className="stats-container animate-pop-in delay-2">
+            <div className="stat-item">
+              <h3 className="stat-number">{trainers.length}+</h3>
+              <p className="stat-label">Elérhető edző</p>
+            </div>
+            <div className="stat-item">
+              <h3 className="stat-number">{locations.length}+</h3>
+              <p className="stat-label">Helyszín</p>
+            </div>
+            <div className="stat-item">
+              <h3 className="stat-number">{languages.length}+</h3>
+              <p className="stat-label">Nyelvek</p>
+            </div>
+            <div className="stat-item">
+              <h3 className="stat-number">{Math.round(averagePrice)} Ft</h3>
+              <p className="stat-label">Átlagár</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider"></div>
+
+      <section className="find-trainer py-5">
+        <div className="container">
+          <h2 className="text-center mb-4 text-orange animate-pop-in">Találd meg számodra a legmegfelelőbb edzőt!</h2>
+          <p className="lead text-center text-white animate-pop-in delay-1">
+            Böngéssz az edzőink között, és válaszd ki azt, aki leginkább megfelel az igényeidnek.
+          </p>
+          <div className="text-center animate-pop-in delay-2">
+            <Link to="/edzok" className="btn-find-trainer">
+              Edzők keresése
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-divider"></div>
     </>
   );
 };

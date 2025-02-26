@@ -1,11 +1,15 @@
-// Navbar.tsx
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { useAuth } from "./AuthContext";
 
 function Navbar() {
   const location = useLocation();
-  const { isLoggedIn, userName } = useAuth();
+  const navigate = useNavigate();
+  const { isLoggedIn, userName, logout } = useAuth();
+
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
 
   return (
     <nav className="navbar" style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}>
@@ -34,7 +38,9 @@ function Navbar() {
         <div className="user-section">
           <img src="/src/images/pfp.png" alt="Profile" className="pfp-icon" />
           {isLoggedIn ? (
-            <span className="user-name">{userName}</span>
+            <span className="user-name" onClick={handleProfileClick} style={{ cursor: 'pointer' }}>
+              {userName}
+            </span>
           ) : (
             <Link to="/login" className="login-button">
               Bejelentkezés

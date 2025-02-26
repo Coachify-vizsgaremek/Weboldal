@@ -32,14 +32,14 @@ body, html {
 }
 
 .loading-text {
-  font-size: 4rem; /* Nagyobb méret */
-  font-weight: bold; /* Vastag betűk */
+  font-size: 4rem;
+  font-weight: bold;
   color: #ffa500;
   margin-bottom: 20px;
-  letter-spacing: 5px; /* Növeli a betűk közötti távolságot */
-  white-space: nowrap; /* Megakadályozza, hogy a szöveg több sorba törjön */
-  opacity: 0; /* Alapértelmezett állapot: elrejtve */
-  animation: fade-in 1s ease-out forwards; /* Animáció a szöveg megjelenítéséhez */
+  letter-spacing: 5px;
+  white-space: nowrap;
+  opacity: 0;
+  animation: fade-in 1s ease-out forwards;
 }
 
 @keyframes fade-in {
@@ -54,8 +54,8 @@ body, html {
 }
 
 .loader-bar {
-  width: 300px; /* Töltősáv szélesebb */
-  height: 15px; /* Magasabb */
+  width: 300px;
+  height: 15px;
   background-color: #444;
   border-radius: 5px;
   overflow: hidden;
@@ -70,7 +70,6 @@ body, html {
   position: relative;
 }
 
-/* Fénycsóva effektus a töltősávhoz */
 .loader-bar .progress::after {
   content: '';
   position: absolute;
@@ -79,7 +78,7 @@ body, html {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, rgba(255, 165, 0, 0.8), rgba(255, 165, 0, 0.2));
-  animation: glow 1.5s infinite alternate; /* Fénycsóva animáció */
+  animation: glow 1.5s infinite alternate;
 }
 
 @keyframes glow {
@@ -95,7 +94,7 @@ body, html {
 .hero {
   position: relative;
   width: 100%;
-  height: 100vh; /* Teljes képernyős magasság */
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -126,7 +125,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Sötétebb overlay a videóra */
+  background: rgba(0, 0, 0, 0.6);
   z-index: 1;
 }
 
@@ -138,50 +137,49 @@ body, html {
 }
 
 .hero h1 {
-  font-size: 4rem; /* Nagyobb cím */
+  font-size: 4rem;
   font-weight: bold;
-  color: #ffa500;
+  color: #e69500;
   margin-bottom: 20px;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Szöveg árnyék */
-  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  opacity: 0;
 }
 
 .hero p {
-  font-size: 1.8rem; /* Nagyobb szöveg */
-  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  font-size: 1.8rem;
+  opacity: 0;
   margin-bottom: 40px;
   color: #fff;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Szöveg árnyék */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
 }
 
 .button-container {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Térköz a gombok között */
-  opacity: 0; /* Alapértelmezett állapot: elrejtve */
+  gap: 20px;
+  opacity: 0;
 }
 
 .btn-special {
-  background-color: #ffa500;
+  background-color: #e69500;
   border: none;
   color: white;
   padding: 12px 24px;
   font-size: 1.2rem;
   cursor: pointer;
-  border-radius: 30px; /* Kerekített gombok */
+  border-radius: 30px;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Gomb árnyék */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
 }
 
 .btn-special:hover {
-  background-color: #e69500;
-  transform: translateY(-5px); /* Gomb felemelkedik hoverkor */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4); /* Nagyobb árnyék hoverkor */
+  background-color: #cc8400;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Fénycsóva effektus a gombokhoz */
 .btn-special::after {
   content: '';
   position: absolute;
@@ -222,60 +220,9 @@ body, html {
   animation-delay: 0.8s;
 }
 
-/* Trainer Section */
-.trainers {
-  background-color: #1a1a1a;
-  margin-top: -30px;
-  padding-top: 20px;
-  padding-bottom: 50px;
-}
-
-/* Gombok stílusai */
-button {
-  padding: 12px 20px;
-  border-radius: 5px;
-  background-color: #ffa500;
-  border: none;
-  color: white;
-  font-size: 16px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  position: relative;
-  z-index: 3;
-}
-
-button:hover {
-  background-color: #e69500;
-  transform: scale(1.05);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero h1 {
-    font-size: 2.5rem;
-  }
-
-  .hero p {
-    font-size: 1.2rem;
-  }
-
-  .card-body {
-    padding: 1rem;
-  }
-
-  .button-container {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .btn-special {
-    width: 100%;
-    padding: 10px 20px;
-  }
-}
-
 /* Intro és statisztika szekció */
 .intro-stats {
-  background-color: rgba(30, 30, 30, 0.9); /* Világosabb fekete háttér */
+  background-color: rgba(30, 30, 30, 0.9);
   padding: 60px 20px;
   margin-bottom: 40px;
 }
@@ -304,7 +251,7 @@ button:hover {
 
 .stat-item {
   text-align: center;
-  background-color: rgba(255, 165, 0, 0.1); /* Narancs árnyalatú háttér */
+  background-color: rgba(255, 165, 0, 0.1);
   padding: 20px;
   border-radius: 10px;
   flex: 1 1 200px;
@@ -330,7 +277,92 @@ button:hover {
   margin: 0;
 }
 
-/* A középen lévő csík eltávolítása */
-.intro-stats hr {
-  display: none; /* Elrejtjük a csíkot */
+/* Szekciók közötti elválasztó vonal */
+.section-divider {
+  width: 80%;
+  height: 2px;
+  background-color: #ffa500;
+  margin: 40px auto;
+}
+
+/* Új rész: Edző keresése */
+.find-trainer {
+  background-color: rgba(30, 30, 30, 0.9);
+  padding: 60px 20px;
+  margin-bottom: 40px;
+}
+
+.find-trainer h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #ffa500;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.find-trainer p {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 40px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.btn-find-trainer {
+  background-color: transparent;
+  border: 2px solid #ffa500;
+  color: #ffa500;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-find-trainer:hover {
+  background-color: #ffa500;
+  color: #111;
+  transform: translateY(-5px);
+}
+
+/* Footer */
+.footer {
+  background-color: rgba(30, 30, 30, 0.9);
+  padding: 20px 0;
+}
+
+.footer-links {
+  margin-top: 10px;
+}
+
+.footer-links a {
+  color: #ffa500;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-special {
+    width: 100%;
+    padding: 10px 20px;
+  }
 }

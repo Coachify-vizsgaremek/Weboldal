@@ -1,58 +1,96 @@
-/* Regisztrációs oldal stílusai */
+/* Registration Page Container */
+.registration-page {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  padding-top: 60px;
+  padding-bottom: 80px;
+  overflow: hidden;
+}
+
+/* Video Background */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Registration Form Container */
 .registration-container {
+  position: relative;
   max-width: 500px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #333;
-  border-radius: 8px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: rgba(51, 51, 51, 0.92);
+  border-radius: 10px;
   color: white;
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .registration-container h2 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  color: #ffa500;
+  font-size: 28px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
-.form-group input {
+.form-group input,
+.form-group textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-top: 5px;
-  background-color: #444;
-  border: none;
-  border-radius: 5px;
+  background-color: rgba(68, 68, 68, 0.85);
+  border: 1px solid #555;
+  border-radius: 6px;
   color: white;
+  font-size: 15px;
+  transition: all 0.3s;
 }
 
-.form-group input:focus {
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
   outline: none;
-  border: 2px solid #ffa500;
+  border-color: #ffa500;
+  box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.2);
 }
 
-/* Edző vagy Kliens választási lehetőség */
+/* Role Selection */
 .role-selection {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+  gap: 10px;
 }
 
 .role-option {
   flex: 1;
-  padding: 10px;
+  padding: 12px;
   text-align: center;
   border: 2px solid #666;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: 0.3s;
-  background-color: #444;
+  transition: all 0.3s;
+  background-color: rgba(68, 68, 68, 0.8);
+  font-weight: 500;
 }
 
 .role-option input {
@@ -61,41 +99,74 @@
 
 .role-option.selected {
   border-color: #ffa500;
-  background-color: #555;
+  background-color: rgba(85, 85, 85, 0.9);
+  color: #ffa500;
 }
 
 .role-option:hover {
-  background-color: #555;
+  background-color: rgba(85, 85, 85, 0.8);
 }
 
+/* Button Styles */
 button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #ffa500;
   border: none;
   color: white;
   font-size: 16px;
-  border-radius: 5px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s;
 }
 
 button:hover {
   background-color: #e69500;
 }
 
+/* Links and Messages */
 p {
   text-align: center;
+  margin: 15px 0;
 }
 
 p a {
   color: #ffa500;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+p a:hover {
+  color: #ffc04d;
+  text-decoration: underline;
 }
 
 .error-message {
   color: #ff4d4d;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  padding: 8px;
+  background-color: rgba(255, 77, 77, 0.1);
+  border-radius: 4px;
 }
 
 #fiok {
-  margin-top: 15px;
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .registration-container {
+    margin: 20px 15px;
+    padding: 20px;
+  }
+  
+  .role-selection {
+    flex-direction: column;
+  }
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./Login.css";
 import { useAuth } from "./AuthContext";
+import loginVideoBackground from "../images/video.mp4";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -39,10 +40,9 @@ const Login: React.FC = () => {
       if (!response.ok) {
         setError(data.message || "Hibás bejelentkezési adatok");
       } else {
-        // A backend válaszában a full_name vagy username szerepel, ezért azt használjuk
         const name = data.full_name || data.username || "Felhasználó";
-        login(name); // Globális bejelentkezési állapot frissítése
-        navigate("/"); // Átirányítás a főoldalra
+        login(name);
+        navigate("/");
       }
     } catch (error) {
       console.error("Hiba a bejelentkezés során:", error);
@@ -51,15 +51,19 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
+    <div id="login-page-container">
+      <video autoPlay loop muted className="login-video-bg">
+        <source src={loginVideoBackground} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div className="login-form-container">
         <h2>Bejelentkezés</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">E-mail</label>
+          <div className="login-form-group">
+            <label htmlFor="login-email">E-mail</label>
             <input
               type="email"
-              id="email"
+              id="login-email"
               name="email"
               value={formData.email}
               onChange={handleInputChange}
@@ -67,11 +71,11 @@ const Login: React.FC = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Jelszó</label>
+          <div className="login-form-group">
+            <label htmlFor="login-password">Jelszó</label>
             <input
               type="password"
-              id="password"
+              id="login-password"
               name="password"
               value={formData.password}
               onChange={handleInputChange}
@@ -79,10 +83,10 @@ const Login: React.FC = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="login-form-group">
             <label>Válaszd ki a szereped</label>
-            <div className="role-selection">
-              <label className={`role-option ${formData.role === "trainer" ? "selected" : ""}`}>
+            <div className="login-role-selection">
+              <label className={`login-role-option ${formData.role === "trainer" ? "login-role-selected" : ""}`}>
                 <input
                   type="radio"
                   name="role"
@@ -93,7 +97,7 @@ const Login: React.FC = () => {
                 Edző
               </label>
 
-              <label className={`role-option ${formData.role === "client" ? "selected" : ""}`}>
+              <label className={`login-role-option ${formData.role === "client" ? "login-role-selected" : ""}`}>
                 <input
                   type="radio"
                   name="role"
@@ -106,10 +110,14 @@ const Login: React.FC = () => {
             </div>
           </div>
 
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="login-error-message">{error}</p>}
 
-          <button type="submit">Bejelentkezés</button>
+          <button type="submit" className="login-submit-btn">Bejelentkezés</button>
         </form>
+
+        <p className="login-register-text">
+          Nincs még fiókod? <Link to="/regisztracio">Regisztrálj itt!</Link>
+        </p>
       </div>
     </div>
   );

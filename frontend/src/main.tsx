@@ -13,6 +13,8 @@ import Kapcsolat from "./pages/Kapcsolat"; // Kapcsolat helyettesítő
 import Edzok from "./pages/Edzok"; // Edzők helyettesítő
 import Szolgaltatasok from "./pages/Szolgaltatasok"; // Szolgáltatások helyettesítő
 import Profile from "./pages/Profile"; // Profile importálása
+import Termekek from "./pages/Termekek";
+
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,7 +28,8 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/szolgaltatasok" element={<Szolgaltatasok />} />
           <Route path="/kapcsolat" element={<Kapcsolat />} />
           <Route path="/edzok" element={<Edzok />} />
-          <Route path="/profile" element={<Profile />} /> {/* Új route a profil oldalhoz */}
+          <Route path="/profile" element={<Profile />} /> 
+          <Route path="/termekek" element={<Termekek />} />
         </Routes>
         <Footer />  {}
       </Router>

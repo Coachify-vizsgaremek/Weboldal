@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getTrainers } from "../api"; // Az API hívás a edzők lekéréséhez
-import "./Edzok.css"; // CSS fájl a stílusokhoz
+import { getTrainers } from "../api";
+import "./Edzok.css";
 
 interface Trainer {
   id: number;
@@ -24,6 +24,8 @@ const TrainersPage = () => {
     price_range: "",
     languages: "",
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Edzők betöltése
   useEffect(() => {
@@ -32,8 +34,12 @@ const TrainersPage = () => {
         const trainersData = await getTrainers();
         setTrainers(trainersData);
         setFilteredTrainers(trainersData);
+        setError(null);
       } catch (error) {
         console.error("Hiba az edzők betöltésekor:", error);
+        setError("Hiba az edzők betöltésekor. Kérjük próbálja újra később.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -52,15 +58,25 @@ const TrainersPage = () => {
   useEffect(() => {
     let result = trainers.filter((trainer) => {
       const matchesSearch = trainer.full_name.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesLocation = filters.location === "" || trainer.location.split(", ").includes(filters.location);
-      const matchesSpecialization = filters.specialization === "" || trainer.specialization === filters.specialization;
-      const matchesTrainingTypes = filters.available_training_types === "" || trainer.available_training_types === filters.available_training_types;
-      const matchesLanguages = filters.languages === "" || trainer.languages.split(", ").includes(filters.languages); // Több nyelv kezelése
+      const matchesLocation = filters.location === "" || 
+        (trainer.location && trainer.location.split(", ").includes(filters.location));
+      const matchesSpecialization = filters.specialization === "" || 
+        trainer.specialization === filters.specialization;
+      const matchesTrainingTypes = filters.available_training_types === "" || 
+        trainer.available_training_types === filters.available_training_types;
+      const matchesLanguages = filters.languages === "" || 
+        (trainer.languages && trainer.languages.split(", ").includes(filters.languages));
 
       // Ár tartomány szűrés
-      const price = parseInt(trainer.price_range.replace(/[^0-9]/g, ""), 10); // Az ár számként
-      const selectedPriceRange = priceRanges.find((range) => range.label === filters.price_range);
-      const matchesPriceRange = filters.price_range === "" || (selectedPriceRange && price >= selectedPriceRange.min && price <= selectedPriceRange.max);
+      let matchesPriceRange = true;
+      if (filters.price_range) {
+        const priceStr = trainer.price_range?.replace(/[^0-9]/g, "") || "0";
+        const price = parseInt(priceStr, 10);
+        const selectedPriceRange = priceRanges.find((range) => range.label === filters.price_range);
+        matchesPriceRange = selectedPriceRange 
+          ? price >= selectedPriceRange.min && price <= selectedPriceRange.max
+          : true;
+      }
 
       return (
         matchesSearch &&
@@ -82,9 +98,21 @@ const TrainersPage = () => {
 
   // Egyedi opciók lekérése a szűrőkhöz
   const getUniqueOptions = (key: keyof Trainer) => {
-    const options = trainers.flatMap((trainer) => trainer[key].toString().split(", "));
-    return [...new Set(options)];
+    const options = trainers.flatMap((trainer) => {
+      const value = trainer[key];
+      if (!value) return [];
+      return value.toString().split(", ");
+    });
+    return [...new Set(options.filter(Boolean))];
   };
+
+  if (loading) {
+    return <div className="loading">Betöltés...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="trainers-page">
@@ -149,16 +177,16 @@ const TrainersPage = () => {
           filteredTrainers.map((trainer) => (
             <div key={trainer.id} className="trainer-card">
               <h2>{trainer.full_name}</h2>
-              <p><strong>Helyszín:</strong> {trainer.location}</p>
-              <p><strong>Specializáció:</strong> {trainer.specialization}</p>
-              <p><strong>Edzés típusa:</strong> {trainer.available_training_types}</p>
-              <p><strong>Ártartomány:</strong> {trainer.price_range}</p>
-              <p><strong>Nyelvek:</strong> {trainer.languages}</p>
-              <p>{trainer.introduction}</p>
+              <p><strong>Helyszín:</strong> {trainer.location || "Nincs megadva"}</p>
+              <p><strong>Specializáció:</strong> {trainer.specialization || "Nincs megadva"}</p>
+              <p><strong>Edzés típusa:</strong> {trainer.available_training_types || "Nincs megadva"}</p>
+              <p><strong>Ártartomány:</strong> {trainer.price_range || "Nincs megadva"}</p>
+              <p><strong>Nyelvek:</strong> {trainer.languages || "Nincs megadva"}</p>
+              <p>{trainer.introduction || "Nincs bemutatkozás"}</p>
             </div>
           ))
         ) : (
-          <p className="no-results">Nincs találat.</p>
+          <p className="no-results">Nincs találat a megadott szűrőkkel.</p>
         )}
       </div>
     </div>

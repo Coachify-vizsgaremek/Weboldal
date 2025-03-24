@@ -1,7 +1,8 @@
 .profile-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 100px;
+    margin-bottom: 40px;
     background-color: rgba(30, 30, 30, 0.9);
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -97,4 +98,30 @@
 .logout-button:hover {
     background-color: #e63900;
     transform: translateY(-2px);
+}
+
+.password-form {
+    margin-top: 20px;
+}
+
+.password-form h2 {
+    font-size: 1.5rem;
+    color: #ffa500;
+    margin-bottom: 10px;
+}
+
+.password-form .form-group {
+    margin-bottom: 10px;
+}
+
+.password-form .form-group label {
+    font-weight: bold;
+}
+
+.password-form .form-group input {
+    padding: 10px;
+    border: 1px solid #ffa500;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
 }

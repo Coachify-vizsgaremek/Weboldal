@@ -1,7 +1,7 @@
 /* Navbar */
 .navbar {
   display: flex;
-  justify-content: space-between; /* Logó balra, többi tartalom jobbra */
+  justify-content: space-between; /* Logó balra, hamburger menü jobbra */
   align-items: center;
   padding: 15px 30px;
   background-color: rgba(0, 0, 0, 0.8); /* Szinte fekete, de enyhén átlátszó */
@@ -12,7 +12,7 @@
   z-index: 1000; /* Biztosítjuk, hogy a Navbar mindig legfelül legyen */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Árnyék hozzáadása */
   transition: background-color 0.8s ease; /* Sima átmenet a háttérszín változásához */
-  backdrop-filter: blur(10px); 
+  backdrop-filter: blur(10px);
 }
 
 /* Logó és "Coachify" felirat bal oldalon */
@@ -32,6 +32,21 @@
   font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
+}
+
+/* Hamburgermenu ikon */
+.hamburger-menu {
+  display: none; /* Alapértelmezés szerint rejtve */
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
+}
+
+.hamburger-menu .line {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 /* Navigációs linkek és felhasználói rész jobb oldalon */
@@ -95,15 +110,25 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
+  .hamburger-menu {
+    display: flex; /* Megjelenítjük a hamburger menüt mobil nézetben */
   }
 
   .nav-content {
+    display: none; /* Alapértelmezés szerint rejtjük a navigációs linkeket és a felhasználói részt */
     flex-direction: column;
-    align-items: flex-start;
+    width: 100%;
     gap: 10px;
+    position: absolute;
+    top: 60px; /* A navbar magassága alatt jelenjen meg */
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Háttérszín a mobil menühöz */
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .nav-content.active {
+    display: flex; /* Megjelenítjük a navigációs linkeket és a felhasználói részt, ha a hamburger menü aktív */
   }
 
   .nav-links {

@@ -37,10 +37,11 @@
   font-size: 4.5rem;
   font-weight: bold;
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
   opacity: 0; /* Alapértelmezett állapot: elrejtve */
   animation: fade-in 1.5s ease-out forwards;
+  margin-top: -120px;
 }
 
 .hero-section p {

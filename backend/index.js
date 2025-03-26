@@ -5,7 +5,7 @@ import bodyParser from "body-parser";
 import bcrypt from "bcrypt";
 import session from "express-session";
 import MySQLStore from "express-mysql-session";
-
+    
 const MySQLSessionStore = MySQLStore(session);
 const app = express();
 const port = 3000;
@@ -60,16 +60,19 @@ const allowedOrigins = ['http://localhost:5173', 'http://localhost:5174'];
 
 const corsOptions = {
     origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
+      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-};
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control'], // Add Cache-Control here
+    exposedHeaders: ['Set-Cookie']
+  };
+  
+  app.use(cors(corsOptions));
 
 // Middleware setup
 app.use(cors(corsOptions));
@@ -78,6 +81,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Session configuration
+// Session konfig frissítése
 app.use(session({
     key: "session_cookie_name",
     secret: "your_secret_key_should_be_more_complex_than_this",
@@ -85,12 +89,13 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: false, // Set to true if using HTTPS
+        secure: process.env.NODE_ENV === 'production', // HTTPS esetén true
         httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
-        sameSite: 'lax'
+        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        domain: 'localhost' // Fontos fejlesztés közben
     },
-    rolling: true // Renew session on every request
+    rolling: true
 }));
 
 // Authentication middleware

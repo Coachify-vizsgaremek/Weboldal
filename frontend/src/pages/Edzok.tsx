@@ -27,7 +27,6 @@ const TrainersPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Edzők betöltése
   useEffect(() => {
     const loadTrainers = async () => {
       try {
@@ -46,7 +45,6 @@ const TrainersPage = () => {
     loadTrainers();
   }, []);
 
-  // Ár tartományok definiálása
   const priceRanges = [
     { label: "5000 Ft alatt", min: 0, max: 5000 },
     { label: "5000-6000 Ft között", min: 5000, max: 6000 },
@@ -54,7 +52,6 @@ const TrainersPage = () => {
     { label: "7000 Ft felett", min: 7000, max: Infinity },
   ];
 
-  // Szűrés és keresés
   useEffect(() => {
     let result = trainers.filter((trainer) => {
       const matchesSearch = trainer.full_name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -67,7 +64,6 @@ const TrainersPage = () => {
       const matchesLanguages = filters.languages === "" || 
         (trainer.languages && trainer.languages.split(", ").includes(filters.languages));
 
-      // Ár tartomány szűrés
       let matchesPriceRange = true;
       if (filters.price_range) {
         const priceStr = trainer.price_range?.replace(/[^0-9]/g, "") || "0";
@@ -90,13 +86,11 @@ const TrainersPage = () => {
     setFilteredTrainers(result);
   }, [searchTerm, filters, trainers]);
 
-  // Szűrők frissítése
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
   };
 
-  // Egyedi opciók lekérése a szűrőkhöz
   const getUniqueOptions = (key: keyof Trainer) => {
     const options = trainers.flatMap((trainer) => {
       const value = trainer[key];
@@ -104,6 +98,11 @@ const TrainersPage = () => {
       return value.toString().split(", ");
     });
     return [...new Set(options.filter(Boolean))];
+  };
+
+  const handleContactTrainer = (trainerId: number) => {
+    // Implement contact functionality
+    alert(`Kapcsolatfelvétel az edzővel (ID: ${trainerId})`);
   };
 
   if (loading) {
@@ -115,8 +114,8 @@ const TrainersPage = () => {
   }
 
   return (
-    <div className="trainers-page">
-      {/* Háttérkép és overlay */}
+    <div className="edzok-container">
+      {/* Hero section */}
       <div className="hero-section">
         <div className="background-image" style={{ backgroundImage: `url(/src/images/hatter2.png)` }}></div>
         <div className="overlay"></div>
@@ -125,69 +124,103 @@ const TrainersPage = () => {
         </div>
       </div>
 
-      {/* Keresőmező és szűrők */}
-      <div className="filters-container">
-        <input
-          type="text"
-          placeholder="Keresés név alapján..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-bar"
-        />
+      <div className="edzok-content">
+        {/* Filters sidebar */}
+        <div className="filters-sidebar">
+          <h3>Keresési feltételek</h3>
+          
+          <div className="filter-group">
+            <label>Keresés név alapján</label>
+            <input
+              type="text"
+              placeholder="Keresés..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
 
-        <select name="location" onChange={handleFilterChange} className="filter-select">
-          <option value="">Helyszín</option>
-          {getUniqueOptions("location").map((location) => (
-            <option key={location} value={location}>{location}</option>
-          ))}
-        </select>
+          <div className="filter-group">
+            <label>Helyszín</label>
+            <select name="location" onChange={handleFilterChange} className="filter-select">
+              <option value="">Összes helyszín</option>
+              {getUniqueOptions("location").map((location) => (
+                <option key={location} value={location}>{location}</option>
+              ))}
+            </select>
+          </div>
 
-        <select name="specialization" onChange={handleFilterChange} className="filter-select">
-          <option value="">Specializáció</option>
-          {getUniqueOptions("specialization").map((specialization) => (
-            <option key={specialization} value={specialization}>{specialization}</option>
-          ))}
-        </select>
+          <div className="filter-group">
+            <label>Specializáció</label>
+            <select name="specialization" onChange={handleFilterChange} className="filter-select">
+              <option value="">Összes specializáció</option>
+              {getUniqueOptions("specialization").map((specialization) => (
+                <option key={specialization} value={specialization}>{specialization}</option>
+              ))}
+            </select>
+          </div>
 
-        <select name="available_training_types" onChange={handleFilterChange} className="filter-select">
-          <option value="">Edzés típusa</option>
-          {getUniqueOptions("available_training_types").map((type) => (
-            <option key={type} value={type}>{type}</option>
-          ))}
-        </select>
+          <div className="filter-group">
+            <label>Edzés típusa</label>
+            <select name="available_training_types" onChange={handleFilterChange} className="filter-select">
+              <option value="">Összes edzés típus</option>
+              {getUniqueOptions("available_training_types").map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
 
-        <select name="price_range" onChange={handleFilterChange} className="filter-select">
-          <option value="">Ártartomány</option>
-          {priceRanges.map((range) => (
-            <option key={range.label} value={range.label}>{range.label}</option>
-          ))}
-        </select>
+          <div className="filter-group">
+            <label>Ártartomány</label>
+            <select name="price_range" onChange={handleFilterChange} className="filter-select">
+              <option value="">Összes árkategória</option>
+              {priceRanges.map((range) => (
+                <option key={range.label} value={range.label}>{range.label}</option>
+              ))}
+            </select>
+          </div>
 
-        <select name="languages" onChange={handleFilterChange} className="filter-select">
-          <option value="">Nyelvek</option>
-          {getUniqueOptions("languages").map((language) => (
-            <option key={language} value={language}>{language}</option>
-          ))}
-        </select>
-      </div>
+          <div className="filter-group">
+            <label>Nyelvek</label>
+            <select name="languages" onChange={handleFilterChange} className="filter-select">
+              <option value="">Összes nyelv</option>
+              {getUniqueOptions("languages").map((language) => (
+                <option key={language} value={language}>{language}</option>
+              ))}
+            </select>
+          </div>
+        </div>
 
-      {/* Edzők listája */}
-      <div className="trainers-list">
-        {filteredTrainers.length > 0 ? (
-          filteredTrainers.map((trainer) => (
-            <div key={trainer.id} className="trainer-card">
-              <h2>{trainer.full_name}</h2>
-              <p><strong>Helyszín:</strong> {trainer.location || "Nincs megadva"}</p>
-              <p><strong>Specializáció:</strong> {trainer.specialization || "Nincs megadva"}</p>
-              <p><strong>Edzés típusa:</strong> {trainer.available_training_types || "Nincs megadva"}</p>
-              <p><strong>Ártartomány:</strong> {trainer.price_range || "Nincs megadva"}</p>
-              <p><strong>Nyelvek:</strong> {trainer.languages || "Nincs megadva"}</p>
-              <p>{trainer.introduction || "Nincs bemutatkozás"}</p>
+        {/* Trainers list */}
+        <div className="trainers-grid">
+          {filteredTrainers.length > 0 ? (
+            filteredTrainers.map((trainer) => (
+              <div key={trainer.id} className="trainer-card">
+                <div className="trainer-header">
+                  <h3>{trainer.full_name}</h3>
+                </div>
+                <div className="trainer-info">
+                  <p><strong>Helyszín:</strong> {trainer.location || "Nincs megadva"}</p>
+                  <p><strong>Specializáció:</strong> {trainer.specialization || "Nincs megadva"}</p>
+                  <p><strong>Edzés típusa:</strong> {trainer.available_training_types || "Nincs megadva"}</p>
+                  <p><strong>Ártartomány:</strong> {trainer.price_range || "Nincs megadva"}</p>
+                  <p><strong>Nyelvek:</strong> {trainer.languages || "Nincs megadva"}</p>
+                  <p className="introduction">{trainer.introduction || "Nincs bemutatkozás"}</p>
+                </div>
+                <button 
+                  className="contact-button"
+                  onClick={() => handleContactTrainer(trainer.id)}
+                >
+                  Kapcsolatfelvétel
+                </button>
+              </div>
+            ))
+          ) : (
+            <div className="no-results">
+              <p>Nincs találat a megadott szűrőkkel.</p>
             </div>
-          ))
-        ) : (
-          <p className="no-results">Nincs találat a megadott szűrőkkel.</p>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

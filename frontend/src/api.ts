@@ -43,7 +43,7 @@ export const getTrainers = async (): Promise<Trainer[]> => {
         }
 
         const result: ApiResponse<Trainer[]> = await response.json();
-        return result.data || [];
+        return result || [];
     } catch (error) {
         console.error('Error fetching trainers:', error);
         throw error;

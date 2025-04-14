@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { getProtectedData, getUserData } from "../api";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -18,15 +19,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const refreshUserData = async () => {
     try {
-      const response = await fetch('http://localhost:3000/protected', {
-        credentials: 'include'
-      });
+      // First try the /api/user endpoint
+      const userResponse = await getUserData();
       
-      if (response.ok) {
-        const data = await response.json();
+      if (userResponse.data) {
         setIsLoggedIn(true);
-        setUserName(data.user.full_name);
-        setUserRole(data.user.role);
+        setUserName(userResponse.data.full_name);
+        setUserRole(userResponse.data.role);
+        return;
+      }
+      
+      // Fall back to /protected endpoint if needed
+      const protectedResponse = await getProtectedData();
+      
+      if (protectedResponse.user) {
+        setIsLoggedIn(true);
+        setUserName(protectedResponse.user.full_name);
+        setUserRole(protectedResponse.user.role);
       } else {
         clearAuthState();
       }
@@ -50,7 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoggedIn(true);
     setUserName(name);
     setUserRole(role);
-    await refreshUserData(); // Force refresh after login
+    await refreshUserData();
   };
 
   const logout = async () => {

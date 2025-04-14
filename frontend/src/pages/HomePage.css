@@ -196,6 +196,67 @@ body, html {
   transform: translate(-50%, -50%) scale(1);
 }
 
+/* Üdvözlő üzenet stílusa */
+
+.welcome-message {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ff8c00;
+  text-shadow: 
+    0 0 10px rgba(255, 165, 0, 0.7),
+    0 0 20px rgba(255, 140, 0, 0.4);
+  margin: 25px 0;
+  padding: 0;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Arial', sans-serif;
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+  animation: 
+    pop-in 0.8s ease-out forwards,
+    glow 2s ease-in-out infinite alternate;
+  animation-delay: 0.8s;
+}
+
+.welcome-message::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff8c00, transparent);
+  border-radius: 100%;
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 
+      0 0 10px rgba(255, 165, 0, 0.7),
+      0 0 20px rgba(255, 140, 0, 0.4);
+  }
+  100% {
+    text-shadow: 
+      0 0 15px rgba(255, 165, 0, 0.9),
+      0 0 30px rgba(255, 140, 0, 0.6);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .welcome-message {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-message {
+    font-size: 1.8rem;
+  }
+}
+
 /* Animációk */
 @keyframes pop-in {
   0% {

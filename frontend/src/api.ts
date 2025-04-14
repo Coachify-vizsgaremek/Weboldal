@@ -21,32 +21,19 @@ const API_URL = 'http://localhost:3000';
 
 export const getTrainers = async (): Promise<Trainer[]> => {
     try {
-        // First try the authenticated endpoint
-        const response = await fetch(`${API_URL}/api/trainers`, {
+        const response = await fetch(`${API_URL}/edzok`, {
             method: 'GET',
             credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-            },
         });
 
         if (!response.ok) {
-            if (response.status === 401) {
-                // Fall back to public endpoint if unauthorized
-                const publicResponse = await fetch(`${API_URL}/edzok`);
-                if (!publicResponse.ok) {
-                    throw new Error(`Failed to fetch trainers: ${publicResponse.status}`);
-                }
-                return await publicResponse.json();
-            }
             throw new Error(`Failed to fetch trainers: ${response.status}`);
         }
 
-        const result: ApiResponse<Trainer[]> = await response.json();
-        return result || [];
+        return await response.json();
     } catch (error) {
         console.error('Error fetching trainers:', error);
-        throw error;
+        return [];
     }
 };
 
@@ -97,13 +84,16 @@ export const getProtectedData = async (): Promise<any> => {
         });
 
         if (!response.ok) {
+            if (response.status === 401) {
+                return { user: null };
+            }
             throw new Error(`Protected data request failed: ${response.status}`);
         }
 
         return await response.json();
     } catch (error) {
         console.error('Error fetching protected data:', error);
-        throw error;
+        return { user: null };
     }
 };
 
@@ -115,17 +105,19 @@ export const getUserData = async (): Promise<any> => {
         });
 
         if (!response.ok) {
+            if (response.status === 401) {
+                return { data: null };
+            }
             throw new Error(`User data request failed: ${response.status}`);
         }
 
         return await response.json();
     } catch (error) {
         console.error('Error fetching user data:', error);
-        throw error;
+        return { data: null };
     }
 };
 
-// Új függvények az API hívásokhoz
 export const getTrainerAvailability = async (trainerId: number): Promise<any> => {
     try {
         const response = await fetch(`${API_URL}/api/trainer-availability/${trainerId}`, {

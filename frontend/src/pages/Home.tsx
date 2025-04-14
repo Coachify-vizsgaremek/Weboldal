@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getTrainers } from "../api";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
+import { useAuth } from "./AuthContext";
 
 interface Trainer {
   id: number;
@@ -26,8 +27,7 @@ const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const text = "Coachify";
-
-  
+  const { isLoggedIn, userName } = useAuth();
 
   useEffect(() => {
     const hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
@@ -104,11 +104,9 @@ const HomePage = () => {
     };
   }, []);
 
-  // Statisztikák kinyerése az adatbázisból
   const locations = [...new Set(trainers.map(trainer => trainer.location))];
   const prices = trainers.map(trainer => parseInt(trainer.price_range));
   const languages = [...new Set(trainers.flatMap(trainer => trainer.languages.split(',')))];
-
   const averagePrice = prices.reduce((a, b) => a + b, 0) / prices.length;
 
   return (
@@ -138,12 +136,18 @@ const HomePage = () => {
               <h1 className="display-4 text-orange animate-pop-in">COACHIFY</h1>
               <p className="lead text-white animate-pop-in delay-1">Edzők, akik érted dolgoznak.</p>
               <div className="button-container animate-pop-in delay-2">
-                <Link to="/login">
-                  <button className="btn btn-light mx-2 btn-special">Bejelentkezés</button>
-                </Link>
-                <Link to="/regisztracio">
-                  <button className="btn btn-light mx-2 btn-special">Regisztráció</button>
-                </Link>
+                {isLoggedIn ? (
+                  <p className="welcome-message animate-pop-in">Üdvözöljük, {userName}!</p>
+                ) : (
+                  <>
+                    <Link to="/login">
+                      <button className="btn btn-light mx-2 btn-special" style={{ width: '180px' }}>Bejelentkezés</button>
+                    </Link>
+                    <Link to="/regisztracio">
+                      <button className="btn btn-light mx-2 btn-special" style={{ width: '180px' }}>Regisztráció</button>
+                    </Link>
+                  </>
+                )}
               </div>
             </>
           )}

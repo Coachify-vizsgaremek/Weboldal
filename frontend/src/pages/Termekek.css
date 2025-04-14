@@ -1,410 +1,850 @@
-.termekek-container {
-    padding: 4rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    color: #fff;
-  }
-  
-  .tabs {
-    display: flex;
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #444;
-  }
-  
-  .tab {
-    padding: 0.8rem 1.5rem;
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-  }
-  
-  .tab:hover {
-    color: #ffa500;
-  }
-  
-  .tab.active {
-    color: #ffa500;
-    font-weight: bold;
-  }
-  
-  .tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: #ffa500;
-  }
-  
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-  }
-  
-  .product-card {
-    background-color: rgba(30, 30, 30, 0.9);
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255, 165, 0, 0.1);
-  }
-  
-  .product-image-container {
-    position: relative;
-    height: 250px;
-    overflow: hidden;
-  }
-  
-  .product-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-    padding: 15px;
-  }
-  
-  .product-card:hover .product-image {
-    transform: scale(1.05);
-  }
-  
-  .image-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+/* Root Container */
+#termekek-root {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+  min-height: calc(100vh - 120px); /* Ensure footer space */
+  margin-top: 80px; /* Space for navbar */
+}
+
+/* Notifications */
+#termekek-notifications {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.termekek-notification {
+  padding: 15px 25px;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+  animation: termekek-slideIn 0.3s ease-out forwards;
+  max-width: 300px;
+}
+
+.termekek-notification-content {
+  font-size: 0.9rem;
+}
+
+.termekek-success {
+  background-color: rgba(46, 125, 50, 0.9);
+  border-left: 4px solid #2e7d32;
+}
+
+.termekek-error {
+  background-color: rgba(211, 47, 47, 0.9);
+  border-left: 4px solid #d32f2f;
+}
+
+.termekek-info {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-left: 4px solid #ffa500;
+}
+
+@keyframes termekek-slideIn {
+  from {
+    transform: translateX(100%);
     opacity: 0;
-    transition: opacity 0.3s ease;
   }
-  
-  .product-image-container:hover .image-nav {
+  to {
+    transform: translateX(0);
     opacity: 1;
   }
-  
-  .image-nav.prev {
-    left: 10px;
-  }
-  
-  .image-nav.next {
-    right: 10px;
-  }
-  
-  .product-info {
-    padding: 1.5rem;
-  }
-  
-  .product-info h3 {
-    margin-top: 0;
-    color: #ffa500;
-    font-size: 1.3rem;
-  }
-  
-  .product-info p {
-    color: #ccc;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-  }
-  
-  .product-price {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .product-price span {
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
-  
-  .tokens {
-    color: #4CAF50;
-    font-size: 0.9rem;
-  }
-  
-  .add-to-cart {
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #ffa500;
-    color: #111;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .add-to-cart:hover {
-    background-color: #e69500;
-  }
-  
-  .cart-container {
-    background-color: rgba(30, 30, 30, 0.9);
-    border-radius: 10px;
-    padding: 2rem;
-  }
-  
-  .empty-cart {
-    text-align: center;
-    color: #ccc;
-    font-size: 1.2rem;
-  }
-  
-  .cart-items {
-    margin-bottom: 2rem;
-  }
-  
-  .cart-item {
-    display: flex;
-    align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #444;
-  }
-  
-  .cart-item-image {
-    width: 80px;
-    height: 80px;
-    margin-right: 1rem;
-  }
-  
-  .cart-item-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-  
-  .cart-item-details {
-    flex-grow: 1;
-  }
-  
-  .cart-item-details h4 {
-    margin: 0 0 0.5rem 0;
-    color: #ffa500;
-  }
-  
-  .quantity-controls {
-    display: flex;
-    align-items: center;
-  }
-  
-  .quantity-controls button {
-    background-color: #444;
-    color: white;
-    border: none;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .quantity-controls button:hover {
-    background-color: #555;
-  }
-  
-  .quantity-controls span {
-    margin: 0 1rem;
-    min-width: 20px;
-    text-align: center;
-  }
-  
-  .cart-item-price {
-    margin-left: 1rem;
-    text-align: right;
-  }
-  
-  .cart-item-price span {
-    display: block;
-    margin-bottom: 0.3rem;
-  }
-  
-  .remove-item {
-    background: none;
-    border: none;
-    color: #ff5555;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-left: 1rem;
-  }
-  
-  .cart-summary {
-    background-color: rgba(40, 40, 40, 0.9);
-    padding: 1.5rem;
-    border-radius: 10px;
-  }
-  
-  .summary-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    font-size: 1.1rem;
-  }
-  
-  .summary-row:last-child {
-    margin-bottom: 1.5rem;
-  }
-  
-  .checkout-button {
-    width: 100%;
+}
+
+/* Tabs */
+.termekek-tabs {
+  display: flex;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #444;
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.termekek-tab {
+  padding: 0.8rem 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  margin: 0 5px;
+  border-radius: 5px;
+}
+
+.termekek-tab:hover {
+  background-color: rgba(255, 165, 0, 0.1);
+  color: #ffa500;
+}
+
+.termekek-active {
+  color: #ffa500;
+  font-weight: bold;
+  background-color: rgba(255, 165, 0, 0.2);
+}
+
+.termekek-active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 3px;
+  background-color: #ffa500;
+  border-radius: 3px;
+}
+
+/* Products Grid */
+.termekek-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.termekek-product-card {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #444;
+}
+
+.termekek-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 165, 0, 0.1);
+}
+
+.termekek-product-image-container {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  background-color: #222;
+}
+
+.termekek-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.termekek-product-card:hover .termekek-product-image {
+  transform: scale(1.05);
+}
+
+.termekek-image-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.termekek-product-image-container:hover .termekek-image-nav {
+  opacity: 1;
+}
+
+.termekek-prev {
+  left: 10px;
+}
+
+.termekek-next {
+  right: 10px;
+}
+
+.termekek-product-info {
+  padding: 1.5rem;
+}
+
+.termekek-product-name {
+  margin-top: 0;
+  color: #ffa500;
+  font-size: 1.3rem;
+}
+
+.termekek-product-description {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  min-height: 40px;
+}
+
+.termekek-product-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.termekek-price {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.termekek-tokens {
+  color: #4CAF50;
+  font-size: 0.9rem;
+}
+
+.termekek-add-to-cart {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #ffa500;
+  color: #111;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.termekek-add-to-cart:hover {
+  background-color: #e69500;
+}
+
+/* Cart */
+.termekek-cart-container {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 1rem;
+  border: 1px solid #444;
+}
+
+.termekek-empty-cart {
+  text-align: center;
+  color: #ccc;
+  font-size: 1.2rem;
+  padding: 2rem;
+}
+
+.termekek-cart-items {
+  margin-bottom: 2rem;
+}
+
+.termekek-cart-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #444;
+}
+
+.termekek-cart-item-image {
+  width: 80px;
+  height: 80px;
+  margin-right: 1rem;
+  background-color: #222;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.termekek-cart-item-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.termekek-cart-item-details {
+  flex-grow: 1;
+}
+
+.termekek-cart-item-name {
+  margin: 0 0 0.5rem 0;
+  color: #ffa500;
+}
+
+.termekek-quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.termekek-quantity-btn {
+  background-color: #444;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.termekek-quantity-btn:hover {
+  background-color: #555;
+}
+
+.termekek-quantity {
+  margin: 0 1rem;
+  min-width: 20px;
+  text-align: center;
+}
+
+.termekek-cart-item-price {
+  margin-left: 1rem;
+  text-align: right;
+}
+
+.termekek-item-total {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-weight: bold;
+}
+
+.termekek-item-tokens {
+  display: block;
+  color: #4CAF50;
+  font-size: 0.9rem;
+}
+
+.termekek-remove-item {
+  background: none;
+  border: none;
+  color: #ff5555;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: color 0.2s;
+}
+
+.termekek-remove-item:hover {
+  color: #ff0000;
+}
+
+.termekek-cart-summary {
+  background-color: rgba(40, 40, 40, 0.9);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #444;
+}
+
+.termekek-summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.termekek-summary-row:last-child {
+  margin-bottom: 1.5rem;
+}
+
+.termekek-checkout-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.termekek-checkout-button:hover {
+  background-color: #45a049;
+}
+
+/* Coupons */
+.termekek-coupons-container {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 1rem;
+  border: 1px solid #444;
+}
+
+.termekek-user-tokens {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: rgba(40, 40, 40, 0.9);
+  border-radius: 10px;
+  border: 1px solid #444;
+}
+
+.termekek-tokens-title {
+  color: #ffa500;
+  margin-bottom: 0.5rem;
+}
+
+.termekek-token-count {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.termekek-coupons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.termekek-coupon-card {
+  background-color: rgba(40, 40, 40, 0.9);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #444;
+}
+
+.termekek-coupon-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 165, 0, 0.1);
+}
+
+.termekek-coupon-name {
+  color: #ffa500;
+  margin-top: 0;
+}
+
+.termekek-coupon-description {
+  color: #ccc;
+  margin-bottom: 1.5rem;
+}
+
+.termekek-coupon-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.termekek-tokens-required {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.termekek-redeem-button {
+  padding: 0.5rem 1rem;
+  background-color: #ffa500;
+  color: #111;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.termekek-redeem-button:hover {
+  background-color: #e69500;
+}
+
+.termekek-disabled {
+  background-color: #666 !important;
+  cursor: not-allowed !important;
+  color: #ccc !important;
+  opacity: 0.7 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+.termekek-disabled:hover {
+  background-color: #666 !important;
+  color: #ccc !important;
+}
+
+.termekek-disabled:active {
+  transform: none !important;
+}
+
+.termekek-disabled:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Checkout */
+.termekek-checkout-container {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 1rem;
+  border: 1px solid #444;
+}
+
+.termekek-checkout-title {
+  color: #ffa500;
+  margin-top: 0;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.termekek-checkout-summary {
+  background-color: rgba(40, 40, 40, 0.9);
+  padding: 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  border: 1px solid #444;
+}
+
+.termekek-checkout-summary h3 {
+  margin-top: 0;
+  color: #ffa500;
+}
+
+.termekek-checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.termekek-form-section {
+  background-color: rgba(40, 40, 40, 0.9);
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #444;
+}
+
+.termekek-form-section h3 {
+  margin-top: 0;
+  color: #ffa500;
+}
+
+.termekek-form-group {
+  margin-bottom: 1rem;
+}
+
+.termekek-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.termekek-form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #333;
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.termekek-form-group input:focus {
+  outline: none;
+  border-color: #ffa500;
+}
+
+.termekek-card-details {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: rgba(50, 50, 50, 0.9);
+  border-radius: 5px;
+  border: 1px solid #444;
+}
+
+.termekek-card-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.termekek-card-row .termekek-form-group {
+  flex: 1;
+}
+
+.termekek-error {
+  color: #ff5555;
+  font-size: 0.9rem;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.termekek-submit-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.termekek-submit-button:hover {
+  background-color: #45a049;
+}
+
+/* Payment methods */
+.termekek-payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.termekek-payment-methods label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.termekek-payment-methods input[type="radio"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #666;
+  border-radius: 50%;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.termekek-payment-methods input[type="radio"]:checked {
+  border-color: #ffa500;
+}
+
+.termekek-payment-methods input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: #ffa500;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #termekek-root {
     padding: 1rem;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
   }
   
-  .checkout-button:hover {
-    background-color: #45a049;
+  .termekek-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
   }
   
-  .coupons-container {
-    background-color: rgba(30, 30, 30, 0.9);
-    border-radius: 10px;
-    padding: 2rem;
+  .termekek-cart-item {
+    flex-wrap: wrap;
   }
   
-  .user-tokens {
-    text-align: center;
-    margin-bottom: 2rem;
+  .termekek-cart-item-image {
+    width: 60px;
+    height: 60px;
   }
   
-  .user-tokens h3 {
-    color: #ffa500;
-    margin-bottom: 0.5rem;
+  .termekek-cart-item-price {
+    margin-left: 0;
+    margin-top: 1rem;
+    width: 100%;
+    text-align: left;
   }
   
-  .token-count {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #4CAF50;
+  .termekek-remove-item {
+    margin-left: auto;
+  }
+
+  .termekek-card-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .termekek-coupons-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .termekek-tabs {
+    flex-direction: column;
   }
   
-  .coupons-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
+  .termekek-tab {
+    text-align: left;
+    border-bottom: 1px solid #444;
+    margin: 0;
+    border-radius: 0;
   }
   
-  .coupon-card {
-    background-color: rgba(40, 40, 40, 0.9);
-    border-radius: 10px;
-    padding: 1.5rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .termekek-active::after {
+    display: none;
   }
   
-  .coupon-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255, 165, 0, 0.1);
+  .termekek-products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .termekek-cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .termekek-cart-item-image {
+    margin-bottom: 1rem;
+  }
+
+  .termekek-quantity-controls {
+    margin: 1rem 0;
+  }
+
+  .termekek-cart-item-price {
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .termekek-checkout-form {
+    gap: 1rem;
+  }
+
+  .termekek-form-section {
+    padding: 1rem;
+  }
+}
+
+/* Animation for cart actions */
+@keyframes termekek-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.termekek-cart-item {
+  animation: termekek-fadeIn 0.3s ease-out forwards;
+}
+
+/* Loading state */
+.termekek-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.termekek-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 165, 0, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffa500;
+  animation: termekek-spin 1s ease-in-out infinite;
+}
+
+@keyframes termekek-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Empty states */
+.termekek-empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #ccc;
+}
+
+.termekek-empty-icon {
+  font-size: 3rem;
+  color: #ffa500;
+  margin-bottom: 1rem;
+}
+
+/* Tooltips */
+.termekek-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.termekek-tooltip .termekek-tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.termekek-tooltip:hover .termekek-tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Form validation */
+.termekek-invalid {
+  border-color: #ff5555 !important;
+}
+
+.termekek-valid {
+  border-color: #4CAF50 !important;
+}
+
+/* Accessibility focus states */
+.termekek-tab:focus,
+.termekek-add-to-cart:focus,
+.termekek-quantity-btn:focus,
+.termekek-remove-item:focus,
+.termekek-checkout-button:focus,
+.termekek-redeem-button:focus,
+.termekek-submit-button:focus {
+  outline: 2px solid #ffa500;
+  outline-offset: 2px;
+}
+
+/* Dark mode compatibility */
+@media (prefers-color-scheme: dark) {
+  .termekek-product-card,
+  .termekek-cart-container,
+  .termekek-coupons-container,
+  .termekek-checkout-container,
+  .termekek-form-section {
+    background-color: rgba(20, 20, 20, 0.95);
   }
   
-  .coupon-card h4 {
-    color: #ffa500;
-    margin-top: 0;
+  .termekek-cart-summary,
+  .termekek-coupon-card,
+  .termekek-checkout-summary,
+  .termekek-card-details {
+    background-color: rgba(30, 30, 30, 0.95);
   }
   
-  .coupon-card p {
-    color: #ccc;
-    margin-bottom: 1.5rem;
+  .termekek-product-card:hover,
+  .termekek-coupon-card:hover {
+    box-shadow: 0 10px 20px rgba(255, 165, 0, 0.2);
   }
   
-  .coupon-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .termekek-form-group input {
+    background-color: #222;
   }
-  
-  .tokens-required {
-    color: #4CAF50;
-    font-weight: bold;
-  }
-  
-  .redeem-button {
-    padding: 0.5rem 1rem;
-    background-color: #ffa500;
-    color: #111;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .redeem-button:hover {
-    background-color: #e69500;
-  }
-  
-  .redeem-button.disabled {
-    background-color: #666;
-    cursor: not-allowed;
-    color: #ccc;
-  }
-  
-  @media (max-width: 768px) {
-    .products-grid {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-    
-    .cart-item {
-      flex-wrap: wrap;
-    }
-    
-    .cart-item-image {
-      width: 60px;
-      height: 60px;
-    }
-    
-    .cart-item-price {
-      margin-left: 0;
-      margin-top: 1rem;
-      width: 100%;
-      text-align: left;
-    }
-    
-    .remove-item {
-      margin-left: auto;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .tabs {
-      flex-direction: column;
-    }
-    
-    .tab {
-      text-align: left;
-      border-bottom: 1px solid #444;
-    }
-    
-    .tab.active::after {
-      display: none;
-    }
-    
-    .products-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+}

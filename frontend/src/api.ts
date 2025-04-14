@@ -124,3 +124,56 @@ export const getUserData = async (): Promise<any> => {
         throw error;
     }
 };
+
+// Új függvények az API hívásokhoz
+export const getTrainerAvailability = async (trainerId: number): Promise<any> => {
+    try {
+        const response = await fetch(`${API_URL}/api/trainer-availability/${trainerId}`, {
+            credentials: 'include'
+        });
+        if (!response.ok) throw new Error('Failed to fetch availability');
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching trainer availability:', error);
+        throw error;
+    }
+};
+
+export const getTrainerAppointments = async (trainerId: number): Promise<any> => {
+    try {
+        const response = await fetch(`${API_URL}/api/appointments/${trainerId}`, {
+            credentials: 'include'
+        });
+        if (!response.ok) throw new Error('Failed to fetch appointments');
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        throw error;
+    }
+};
+
+export const createAppointment = async (appointmentData: {
+    trainer_id: number;
+    date: string;
+    start_time: string;
+    end_time: string;
+}): Promise<any> => {
+    try {
+        const response = await fetch(`${API_URL}/api/appointments`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(appointmentData)
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Appointment creation failed');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error creating appointment:', error);
+        throw error;
+    }
+};

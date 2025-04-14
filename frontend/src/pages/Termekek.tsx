@@ -60,7 +60,7 @@ export default function Termekek() {
       },
       {
         id: 4,
-        name: "Gallérós",
+        name: "Galléros Póló",
         price: 6990,
         tokens: 70,
         images: ["/src/images/galleros.png", "/src/images/galleros2.png"],
@@ -68,7 +68,7 @@ export default function Termekek() {
       },
       {
         id: 5,
-        name: "Noifelső",
+        name: "Női Felső",
         price: 5490,
         tokens: 55,
         images: ["/src/images/noifelso.png", "/src/images/noifelso2.png"],
@@ -76,7 +76,7 @@ export default function Termekek() {
       },
       {
         id: 6,
-        name: "Noipóló",
+        name: "Női Póló",
         price: 4590,
         tokens: 45,
         images: ["/src/images/noipolo.png", "/src/images/noipolo2.png"],

@@ -735,6 +735,87 @@ app.get('/api/coupons', async (req, res) => {
     }
 });
 
+// Új endpointok az időpontkezeléshez
+app.get('/api/trainer-availability/:trainerId', async (req, res) => {
+    try {
+        const { trainerId } = req.params;
+        const [rows] = await db.query(
+            `SELECT * FROM trainer_availability WHERE trainer_id = ?`,
+            [trainerId]
+        );
+        res.json(rows);
+    } catch (error) {
+        console.error('Error fetching trainer availability:', error);
+        res.status(500).json({ 
+            message: 'Server error',
+            error: error.message
+        });
+    }
+});
+
+app.get('/api/appointments/:trainerId', async (req, res) => {
+    try {
+        const { trainerId } = req.params;
+        const [rows] = await db.query(
+            `SELECT * FROM appointments 
+             WHERE trainer_id = ? 
+             AND date >= CURDATE() 
+             AND status != 'cancelled'
+             ORDER BY date, start_time`,
+            [trainerId]
+        );
+        res.json(rows);
+    } catch (error) {
+        console.error('Error fetching appointments:', error);
+        res.status(500).json({ 
+            message: 'Server error',
+            error: error.message
+        });
+    }
+});
+
+app.post('/api/appointments', async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const { trainer_id, date, start_time, end_time } = req.body;
+
+    try {
+        // Ellenőrizzük, hogy szabad-e az időpont
+        const [existing] = await db.query(
+            `SELECT id FROM appointments 
+             WHERE trainer_id = ? 
+             AND date = ? 
+             AND (
+                 (start_time < ? AND end_time > ?) OR
+                 (start_time >= ? AND start_time < ?)
+             )`,
+            [trainer_id, date, end_time, start_time, start_time, end_time]
+        );
+
+        if (existing.length > 0) {
+            return res.status(400).json({ message: 'Az időpont már foglalt' });
+        }
+
+        // Létrehozzuk az időpontot
+        await db.query(
+            `INSERT INTO appointments 
+             (trainer_id, client_id, date, start_time, end_time, status) 
+             VALUES (?, ?, ?, ?, ?, 'pending')`,
+            [trainer_id, req.session.user.id, date, start_time, end_time]
+        );
+
+        res.json({ message: 'Időpont sikeresen foglalva' });
+    } catch (error) {
+        console.error('Error creating appointment:', error);
+        res.status(500).json({ 
+            message: 'Server error',
+            error: error.message
+        });
+    }
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);

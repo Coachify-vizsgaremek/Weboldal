@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getTrainers } from "../api";
+import { useNavigate } from "react-router-dom";
 import "./Edzok.css";
 
 interface Trainer {
@@ -26,6 +27,7 @@ const TrainersPage = () => {
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadTrainers = async () => {
@@ -100,9 +102,20 @@ const TrainersPage = () => {
     return [...new Set(options.filter(Boolean))];
   };
 
-  const handleContactTrainer = (trainerId: number) => {
-    // Implement contact functionality
-    alert(`Kapcsolatfelvétel az edzővel (ID: ${trainerId})`);
+  const handleContactTrainer = (trainer: Trainer) => {
+    navigate(`/szolgaltatasok/${trainer.id}`, {
+      state: {
+        trainerData: {
+          id: trainer.id,
+          full_name: trainer.full_name,
+          location: trainer.location,
+          specialization: trainer.specialization,
+          price_range: trainer.price_range,
+          languages: trainer.languages,
+          introduction: trainer.introduction
+        }
+      }
+    });
   };
 
   if (loading) {
@@ -209,9 +222,9 @@ const TrainersPage = () => {
                 </div>
                 <button 
                   className="contact-button"
-                  onClick={() => handleContactTrainer(trainer.id)}
+                  onClick={() => handleContactTrainer(trainer)}
                 >
-                  Kapcsolatfelvétel
+                  Időpontfoglalás
                 </button>
               </div>
             ))

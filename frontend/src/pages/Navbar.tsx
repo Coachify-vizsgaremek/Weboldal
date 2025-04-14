@@ -18,14 +18,21 @@ function Navbar() {
     initializeAuth();
   }, [refreshUserData]);
 
+  // Close menu when location changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+
   const handleProfileClick = () => {
     navigate("/profile");
+    setIsMenuOpen(false);
   };
 
   const handleLogout = async () => {
     try {
       await logout();
       navigate("/login");
+      setIsMenuOpen(false);
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -47,9 +54,9 @@ function Navbar() {
       </Link>
 
       <div className="hamburger-menu" onClick={toggleMenu}>
-        <div className="line"></div>
-        <div className="line"></div>
-        <div className="line"></div>
+        <div className={`line ${isMenuOpen ? "rotate-45" : ""}`}></div>
+        <div className={`line ${isMenuOpen ? "opacity-0" : ""}`}></div>
+        <div className={`line ${isMenuOpen ? "-rotate-45" : ""}`}></div>
       </div>
 
       <div className={`nav-content ${isMenuOpen ? "active" : ""}`}>

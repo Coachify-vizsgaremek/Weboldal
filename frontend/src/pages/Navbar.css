@@ -1,21 +1,21 @@
 /* Navbar */
 .navbar {
   display: flex;
-  justify-content: space-between; /* Logó balra, hamburger menü jobbra */
+  justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  background-color: rgba(0, 0, 0, 0.8); /* Szinte fekete, de enyhén átlátszó */
-  position: fixed; /* Rögzített pozíció */
-  top: 0; /* A Navbar az oldal tetején legyen */
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000; /* Biztosítjuk, hogy a Navbar mindig legfelül legyen */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Árnyék hozzáadása */
-  transition: background-color 0.8s ease; /* Sima átmenet a háttérszín változásához */
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.8s ease;
   backdrop-filter: blur(10px);
 }
 
-/* Logó és "Coachify" felirat bal oldalon */
+/* Logo and "Coachify" text */
 .logo {
   display: flex;
   align-items: center;
@@ -34,12 +34,13 @@
   color: #fff;
 }
 
-/* Hamburgermenu ikon */
+/* Hamburger menu icon */
 .hamburger-menu {
-  display: none; /* Alapértelmezés szerint rejtve */
+  display: none;
   flex-direction: column;
   cursor: pointer;
   gap: 5px;
+  z-index: 1001;
 }
 
 .hamburger-menu .line {
@@ -49,11 +50,11 @@
   transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-/* Navigációs linkek és felhasználói rész jobb oldalon */
+/* Navigation links and user section */
 .nav-content {
   display: flex;
   align-items: center;
-  gap: 20px; /* Térköz a navigációs linkek és a felhasználói rész között */
+  gap: 20px;
 }
 
 .nav-links {
@@ -76,7 +77,7 @@
 .user-section {
   display: flex;
   align-items: center;
-  gap: 10px; /* Térköz a profil ikon és a bejelentkezés gomb/felhasználó név között */
+  gap: 10px;
 }
 
 .pfp-icon {
@@ -111,32 +112,42 @@
 /* Responsive */
 @media (max-width: 768px) {
   .hamburger-menu {
-    display: flex; /* Megjelenítjük a hamburger menüt mobil nézetben */
+    display: flex;
   }
 
   .nav-content {
-    display: none; /* Alapértelmezés szerint rejtjük a navigációs linkeket és a felhasználói részt */
+    display: none;
     flex-direction: column;
     width: 100%;
     gap: 10px;
     position: absolute;
-    top: 60px; /* A navbar magassága alatt jelenjen meg */
+    top: 100%;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.8); /* Háttérszín a mobil menühöz */
-    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.95); /* Solid dark background */
+    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
   }
 
   .nav-content.active {
-    display: flex; /* Megjelenítjük a navigációs linkeket és a felhasználói részt, ha a hamburger menü aktív */
+    display: flex;
   }
 
   .nav-links {
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .nav-link {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .user-section {
-    margin-top: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
   }
 }

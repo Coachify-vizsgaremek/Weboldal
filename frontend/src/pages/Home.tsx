@@ -1,9 +1,26 @@
+/**
+ * HomePage Component
+ * 
+ * The main landing page for the Coachify application featuring:
+ * - Loading animation with progress bar
+ * - Hero section with video background
+ * - Statistics about available trainers
+ * - Call-to-action sections
+ * 
+ * @component
+ * @example
+ * return <HomePage />
+ */
 import { useEffect, useState } from "react";
 import { getTrainers } from "../api";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
 import { useAuth } from "./AuthContext";
 
+/**
+ * Interface defining the structure of Trainer objects
+ * @interface
+ */
 interface Trainer {
   id: number;
   full_name: string;
@@ -18,7 +35,12 @@ interface Trainer {
   introduction: string;
 }
 
+/**
+ * Main HomePage component
+ * @returns {JSX.Element} The rendered HomePage component
+ */
 const HomePage = () => {
+  // State management
   const [trainers, setTrainers] = useState<Trainer[]>([]);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -29,6 +51,12 @@ const HomePage = () => {
   const text = "Coachify";
   const { isLoggedIn, userName } = useAuth();
 
+  /**
+   * Effect for handling initial page load animations
+   * - Progress bar animation
+   * - Typing text animation
+   * - First visit detection using localStorage
+   */
   useEffect(() => {
     const hasLoadedBefore = localStorage.getItem("hasLoadedBefore");
 
@@ -77,6 +105,9 @@ const HomePage = () => {
     }
   }, []);
 
+  /**
+   * Effect for loading trainers data from API
+   */
   useEffect(() => {
     const loadTrainers = async () => {
       try {
@@ -92,6 +123,9 @@ const HomePage = () => {
     loadTrainers();
   }, []);
 
+  /**
+   * Effect for cleaning up localStorage on page unload
+   */
   useEffect(() => {
     const handleBeforeUnload = () => {
       localStorage.removeItem("hasLoadedBefore");
@@ -104,6 +138,7 @@ const HomePage = () => {
     };
   }, []);
 
+  // Computed values
   const locations = [...new Set(trainers.map(trainer => trainer.location))];
   const prices = trainers.map(trainer => parseInt(trainer.price_range));
   const languages = [...new Set(trainers.flatMap(trainer => trainer.languages.split(',')))];
@@ -111,6 +146,7 @@ const HomePage = () => {
 
   return (
     <>
+      {/* Loading Animation */}
       {loading && (
         <div className="loader-wrapper">
           <div className="loader">
@@ -122,6 +158,7 @@ const HomePage = () => {
         </div>
       )}
 
+      {/* Hero Section */}
       <header className="hero">
         <div className="video-background">
           <video autoPlay muted loop className="background-video">
@@ -154,6 +191,7 @@ const HomePage = () => {
         </div>
       </header>
 
+      {/* Statistics Section */}
       <section className="intro-stats py-5">
         <div className="container">
           <h2 className="text-center mb-4 text-orange animate-pop-in">Miért válassz minket?</h2>
@@ -185,6 +223,7 @@ const HomePage = () => {
 
       <div className="section-divider"></div>
 
+      {/* Find Trainer Section */}
       <section className="find-trainer py-5">
         <div className="container">
           <h2 className="text-center mb-4 text-orange animate-pop-in">Találd meg számodra a legmegfelelőbb edzőt!</h2>

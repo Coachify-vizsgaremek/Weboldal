@@ -357,7 +357,7 @@ export default function Termekek() {
                   checked={termekekPaymentMethod === "transfer"}
                   onChange={() => setTermekekPaymentMethod("transfer")}
                 />
-                Banki átutalás
+                Fizetés átvételkor
               </label>
             </div>
           </div>

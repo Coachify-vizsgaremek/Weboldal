@@ -146,6 +146,17 @@
   text-decoration: underline;
 }
 
+.registration-success-message {
+  color: #4BB543;
+  text-align: center;
+  margin-bottom: 15px;
+  font-weight: 500;
+  padding: 8px;
+  background-color: rgba(75, 181, 67, 0.1);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 600px) {
   #registration-container {
